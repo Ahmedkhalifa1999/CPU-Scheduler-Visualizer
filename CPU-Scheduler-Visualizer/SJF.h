@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "GanntChart.h"
-#include "processes.h"
 
 typedef struct {
     unsigned int id; //Process IDs start from 1 (Process ID 0 is reserved)
@@ -11,7 +10,6 @@ typedef struct {
     unsigned int burstLength;
 } SJF_process;
 
-GanntChart SJFN();
-GanntChart SJFP();
+GanntChart SJF(const std::vector<SJF_process> &processes, bool preemptive);
 
 #endif // SJF_H

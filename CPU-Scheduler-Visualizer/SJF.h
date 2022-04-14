@@ -10,6 +10,7 @@ typedef struct {
     unsigned int burstLength;
 } SJF_process;
 
-GanntChart SJF(const std::vector<SJF_process> &processes, bool preemptive);
+GanntChart SJFN(const std::vector<SJF_process> &processes);
+GanntChart SJFP(const std::vector<SJF_process>& processes);
 
 #endif // SJF_H

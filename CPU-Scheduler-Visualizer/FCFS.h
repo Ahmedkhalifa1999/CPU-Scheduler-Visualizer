@@ -10,6 +10,6 @@ typedef struct {
     unsigned int burstLength;
 } FCFS_process;
 
-GanntChart FCFS(const std::vector<FCFS_process> &processes);
+GanntChart FCFS(std::vector<FCFS_process> &processes);
 
 #endif // FCFS_H

@@ -14,7 +14,8 @@ SOURCES += \
     RoundRobin.cpp \
     SJF.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    metrics.cpp
 
 HEADERS += \
     FCFS.h \
@@ -22,7 +23,8 @@ HEADERS += \
     Priority.h \
     RoundRobin.h \
     SJF.h \
-    mainwindow.h
+    mainwindow.h \
+    metrics.h
 
 FORMS += \
     mainwindow.ui

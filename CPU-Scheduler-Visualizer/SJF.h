@@ -11,6 +11,6 @@ typedef struct {
 } SJF_process;
 
 GanntChart SJFN(const std::vector<SJF_process> &processes);
-GanntChart SJFP(const std::vector<SJF_process>& processes);
+GanntChart SJFP(const std::vector<SJF_process> &processes);
 
 #endif // SJF_H

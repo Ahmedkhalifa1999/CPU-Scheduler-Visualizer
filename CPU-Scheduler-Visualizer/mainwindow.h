@@ -15,6 +15,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+
+    void on_SchedulerComboBox_currentIndexChanged(int index);
+
+    void on_InesrtButton_clicked();
+
+    void on_SubmitButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

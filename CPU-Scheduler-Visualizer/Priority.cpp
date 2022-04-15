@@ -5,9 +5,9 @@
 #include <string.h> 
 using namespace std;
 
-GanntChart Priority(const std::vector<Priority_process> &p,bool preemptive) {
+GanntChart Priority(const std::vector<Priority_process> &p,true) {
   //preemtive 
-    GanntChart gc(100,1);
+    GanntChart gc(100);
         int n;
 
         float avg_waiting_time;
@@ -80,9 +80,9 @@ GanntChart Priority(const std::vector<Priority_process> &p,bool preemptive) {
 
         return gc;
     }
-GanntChart Priority(const std::vector<Priority_process>& p,bool preemptive){
+GanntChart Priority(const std::vector<Priority_process>& p,false){
     //non preemptive  
-    GanntChart gc(100,0);
+    GanntChart gc(100);
         int n;
         float avg_waiting_time;
         int total_waiting_time = 0;

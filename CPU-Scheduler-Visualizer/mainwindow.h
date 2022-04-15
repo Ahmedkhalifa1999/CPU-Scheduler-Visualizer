@@ -23,7 +23,10 @@ private slots:
 
     void on_SubmitButton_clicked();
 
+    void on_RemoveButton_clicked();
+
 private:
     Ui::MainWindow *ui;
+    unsigned int currentProcessID = 0;
 };
 #endif // MAINWINDOW_H

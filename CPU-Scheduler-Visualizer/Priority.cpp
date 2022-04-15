@@ -5,22 +5,23 @@
 #include <string.h> 
 using namespace std;
 
-GanntChart Priority(const std::vector<Priority_process> &p,bool preemptive) {
-  //preemtive 
-    GanntChart gc(100,1);
-        int n;
+GanntChart Priority(const std::vector<Priority_process>& p, bool preemptive) {
 
-        float avg_waiting_time;
-        int total_waiting_time = 0;
-        int burst_remaining[100];
-        int is_completed[100];
-        memset(is_completed, 0, sizeof(is_completed));
+    GanntChart gc(100);
+    int n;
 
-        cout << setprecision(2) << fixed;
-        int current_time = 0;
-        int completed = 0;
-        int prev = 0;
+    float avg_waiting_time;
+    int total_waiting_time = 0;
+    int burst_remaining[100];
+    int is_completed[100];
+    memset(is_completed, 0, sizeof(is_completed));
 
+    cout << setprecision(2) << fixed;
+    int current_time = 0;
+    int completed = 0;
+    int prev = 0;
+
+    if (preemptive == true) {
         while (completed != n) {
             int idx = -1;
             int mx = -1;
@@ -74,26 +75,13 @@ GanntChart Priority(const std::vector<Priority_process> &p,bool preemptive) {
 
         for (int i = 0; i < n; i++) {
             gc[i].process = p[i].pid;  gc[i].start = p[i].start_time;  gc[i].end = p[i].completion_time;
-            
+
         }
         cout << "Average Waiting Time = " << avg_waiting_time << endl;
 
         return gc;
     }
-GanntChart Priority(const std::vector<Priority_process>& p,bool preemptive){
-    //non preemptive  
-    GanntChart gc(100,0);
-        int n;
-        float avg_waiting_time;
-        int total_waiting_time = 0;
-        int is_completed[100];
-        memset(is_completed, 0, sizeof(is_completed));
-
-        cout << setprecision(2) << fixed;
-        int current_time = 0;
-        int completed = 0;
-        int prev = 0;
-
+else{
         while (completed != n) {
             int idx = -1;
             int mx = -1;
@@ -147,5 +135,4 @@ GanntChart Priority(const std::vector<Priority_process>& p,bool preemptive){
         cout << "Average Waiting Time = " << avg_waiting_time << endl;
         return gc;
     }
-
-
+    }

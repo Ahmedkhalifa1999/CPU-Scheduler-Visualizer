@@ -7,10 +7,12 @@
 typedef struct {
     unsigned int id; //Process IDs start from 1 (Process ID 0 is reserved)
     unsigned int arrivelTime;
+    unsigned int completionTime;
+    unsigned int startTime;
     unsigned int burstLength;
 } SJF_process;
 
-GanntChart SJFN(const std::vector<SJF_process> &processes);
-GanntChart SJFP(const std::vector<SJF_process> &processes);
+GanntChart SJF(const std::vector<SJF_process>& processes, bool preemptive);
+
 
 #endif // SJF_H

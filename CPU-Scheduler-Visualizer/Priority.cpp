@@ -1,15 +1,14 @@
 #include "Priority.h"
 #include <iostream>
-#include <algorithm>
+#include <algorithm> 
 #include <iomanip>
-#include <string.h>
-#include<vector>
+#include <string.h> 
 using namespace std;
 
-GanntChart Priority(std::vector<Priority_process> &p, bool preemptive) {
+GanntChart Priority(std::vector<Priority_process>& p, bool preemptive) {
 
     GanntChart gc(100);
- int n = p.size();
+    int n = p.size();
     float avg_waiting_time;
     int total_waiting_time = 0;
     int burst_remaining[100];
@@ -20,7 +19,7 @@ GanntChart Priority(std::vector<Priority_process> &p, bool preemptive) {
     int current_time = 0;
     int completed = 0;
     int prev = 0;
-   if (preemptive == true) {
+    if (preemptive == true) {
         while (completed != n) {
             int idx = -1;
             int mx = -1;
@@ -41,7 +40,7 @@ GanntChart Priority(std::vector<Priority_process> &p, bool preemptive) {
 
             if (idx != -1) {
                 if (burst_remaining[idx] == p[idx].burst_time) {
-                   p[idx].start_time = current_time;
+                    p[idx].start_time = current_time;
 
                 }
                 burst_remaining[idx] -= 1;
@@ -82,7 +81,7 @@ GanntChart Priority(std::vector<Priority_process> &p, bool preemptive) {
         return gc;
     }
 
-else{
+    else {
         while (completed != n) {
             int idx = -1;
             int mx = -1;
@@ -136,4 +135,4 @@ else{
         cout << "Average Waiting Time = " << avg_waiting_time << endl;
         return gc;
     }
-    };
+}

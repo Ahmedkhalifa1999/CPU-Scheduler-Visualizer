@@ -5,15 +5,10 @@
 #include "GanntChart.h"
 
 typedef struct {
-    int pid;//Process IDs start from 1 (Process ID 0 is reserved)
-    int arrival_time;
-    int burst_time;
-    int priority;
-    int start_time;
-    int completion_time;
-    int waiting_time;
-    int turnaround_time;
-    int response_time;
+    unsigned int id;//Process IDs start from 1 (Process ID 0 is reserved)
+    unsigned int arrivalTime;
+    unsigned int burstLength;
+    unsigned int priority;
 } Priority_process;
 
 GanntChart Priority(const std::vector<Priority_process> &processes, bool preemptive);

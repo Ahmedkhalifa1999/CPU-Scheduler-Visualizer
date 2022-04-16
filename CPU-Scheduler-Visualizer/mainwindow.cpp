@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->PriorityLabel->hide();
     ui->PrioritySpinBox->setEnabled(false);
     ui->PrioritySpinBox->hide();
+    ui->ProcessesTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 MainWindow::~MainWindow()

@@ -10,9 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     FCFS.cpp \
-    Priority.cpp \
     RoundRobin.cpp \
-    SJF.cpp \
     main.cpp \
     mainwindow.cpp
 

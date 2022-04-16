@@ -18,7 +18,7 @@ GanntChart FCFS(const std::vector<FCFS_process> &processes)
     unsigned int current_time = 0;       /* time on the gantt chart */
     GanntChart gc;                       /* gc is vector of slots , slot for each process */
     unsigned char flag = 1;              /*Flag used for indicating filling first slot */
-    vector<FCFS_process> p = processes;
+    std::vector<FCFS_process> p = processes;
 
     /* Sort processes according to arrival times */
     for (unsigned int i = 0; i < n - 1; i++)

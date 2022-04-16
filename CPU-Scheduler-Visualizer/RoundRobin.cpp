@@ -1,7 +1,9 @@
 #include "RoundRobin.h"
 
+using namespace std;
+
 GanntChart RoundRobin(const std::vector<RoundRobin_process> &processes, unsigned int timeQuantum) {
-#define NO_OF_PROCESS processes.size()
+
 	GanntChart ganntChart;
 	GanntChartSection section;
 	vector<RoundRobin_process> process = processes;
@@ -47,7 +49,7 @@ GanntChart RoundRobin(const std::vector<RoundRobin_process> &processes, unsigned
 			ganntChart.push_back(section);
 		}
 
-		i = (i + 1) % NO_OF_PROCESS;
+		i = (i + 1) % processes.size();
 
 
 	}

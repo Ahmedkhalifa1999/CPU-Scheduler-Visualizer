@@ -56,6 +56,7 @@ public:
     QLabel *AverageResponseTimeOutputLabel;
     QLabel *MaximumResponseTimeOutputLabel;
     QPushButton *SubmitButton;
+    QPushButton *RemoveButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -92,8 +93,19 @@ public:
         PrioritySpinBox->setEnabled(false);
         PrioritySpinBox->setGeometry(QRect(430, 110, 48, 29));
         ProcessesTable = new QTableWidget(centralwidget);
+        if (ProcessesTable->columnCount() < 4)
+            ProcessesTable->setColumnCount(4);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        ProcessesTable->setHorizontalHeaderItem(0, __qtablewidgetitem);
+        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        ProcessesTable->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
+        ProcessesTable->setHorizontalHeaderItem(2, __qtablewidgetitem2);
+        QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
+        ProcessesTable->setHorizontalHeaderItem(3, __qtablewidgetitem3);
         ProcessesTable->setObjectName(QString::fromUtf8("ProcessesTable"));
         ProcessesTable->setGeometry(QRect(20, 160, 761, 151));
+        ProcessesTable->setColumnCount(4);
         Chart = new QGraphicsView(centralwidget);
         Chart->setObjectName(QString::fromUtf8("Chart"));
         Chart->setGeometry(QRect(15, 330, 771, 121));
@@ -121,7 +133,7 @@ public:
         PreemptiveCheckBox->setGeometry(QRect(270, 40, 93, 26));
         InesrtButton = new QPushButton(centralwidget);
         InesrtButton->setObjectName(QString::fromUtf8("InesrtButton"));
-        InesrtButton->setGeometry(QRect(530, 110, 83, 29));
+        InesrtButton->setGeometry(QRect(500, 110, 83, 29));
         BurstLengthLabel = new QLabel(centralwidget);
         BurstLengthLabel->setObjectName(QString::fromUtf8("BurstLengthLabel"));
         BurstLengthLabel->setGeometry(QRect(50, 120, 71, 16));
@@ -152,7 +164,10 @@ public:
         MaximumResponseTimeOutputLabel->setGeometry(QRect(720, 520, 49, 16));
         SubmitButton = new QPushButton(centralwidget);
         SubmitButton->setObjectName(QString::fromUtf8("SubmitButton"));
-        SubmitButton->setGeometry(QRect(670, 110, 91, 31));
+        SubmitButton->setGeometry(QRect(700, 110, 91, 31));
+        RemoveButton = new QPushButton(centralwidget);
+        RemoveButton->setObjectName(QString::fromUtf8("RemoveButton"));
+        RemoveButton->setGeometry(QRect(600, 110, 81, 31));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -179,6 +194,14 @@ public:
         SchedulerComboBox->setItemText(3, QCoreApplication::translate("MainWindow", "Round Robin", nullptr));
 
         QuantumLabel->setText(QCoreApplication::translate("MainWindow", "Quantum", nullptr));
+        QTableWidgetItem *___qtablewidgetitem = ProcessesTable->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Process ID", nullptr));
+        QTableWidgetItem *___qtablewidgetitem1 = ProcessesTable->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QCoreApplication::translate("MainWindow", "Burst Length", nullptr));
+        QTableWidgetItem *___qtablewidgetitem2 = ProcessesTable->horizontalHeaderItem(2);
+        ___qtablewidgetitem2->setText(QCoreApplication::translate("MainWindow", "Arrival Time", nullptr));
+        QTableWidgetItem *___qtablewidgetitem3 = ProcessesTable->horizontalHeaderItem(3);
+        ___qtablewidgetitem3->setText(QCoreApplication::translate("MainWindow", "Priority", nullptr));
         AverageWaitingTimeLabel->setText(QCoreApplication::translate("MainWindow", "Average Waiting Time", nullptr));
         MaximumWaitingTimeLabel->setText(QCoreApplication::translate("MainWindow", "Maximum Waiting Time", nullptr));
         AverageTurnArounTimeLabel->setText(QCoreApplication::translate("MainWindow", "Average Turn Around Time", nullptr));
@@ -197,6 +220,7 @@ public:
         AverageResponseTimeOutputLabel->setText(QCoreApplication::translate("MainWindow", "0.0", nullptr));
         MaximumResponseTimeOutputLabel->setText(QCoreApplication::translate("MainWindow", "0.0", nullptr));
         SubmitButton->setText(QCoreApplication::translate("MainWindow", "Submit", nullptr));
+        RemoveButton->setText(QCoreApplication::translate("MainWindow", "Remove", nullptr));
     } // retranslateUi
 
 };

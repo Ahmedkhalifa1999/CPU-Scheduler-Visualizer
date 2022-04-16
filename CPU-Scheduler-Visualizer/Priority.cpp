@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-GanntChart Priority(std::vector<Priority_process>& p, bool preemptive) {
+GanntChart Priority(const std::vector<Priority_process>& p, bool preemptive) {
     GanntChart gc;
     GanntChartSection gcs;
     int n = p.size();

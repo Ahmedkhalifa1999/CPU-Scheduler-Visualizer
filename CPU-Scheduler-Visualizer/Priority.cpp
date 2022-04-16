@@ -1,35 +1,37 @@
 #include "Priority.h"
 #include <iostream>
+#include <algorithm>
+#include <iomanip>
+#include <string.h>
+#include<vector>
 using namespace std;
 
-GanntChart Priority(std::vector<Priority_process>& p, bool preemptive) {
-    GanntChart gc;
-    GanntChartSection gcs;
-    int n = p.size();
+GanntChart Priority(std::vector<Priority_process> &p, bool preemptive) {
+
+    GanntChart gc(100);
+ int n = p.size();
     float avg_waiting_time;
     int total_waiting_time = 0;
     int burst_remaining[100];
-    vector< int> is_completed(100, 0);
-    vector < int> start_time;
-    vector<int> completion_time;
-    vector <int> waiting_time;
-    vector<int> turnaround_time;
-    vector< int> response_time;
+    int is_completed[100];
+    memset(is_completed, 0, sizeof(is_completed));
+
+    cout << setprecision(2) << fixed;
     int current_time = 0;
     int completed = 0;
     int prev = 0;
-    if (preemptive == true) {
+   if (preemptive == true) {
         while (completed != n) {
             int idx = -1;
             int mx = -1;
             for (int i = 0; i < n; i++) {
-                if (p[i].arrivalTime <= current_time && is_completed[i] == 0) {
+                if (p[i].arrival_time <= current_time && is_completed[i] == 0) {
                     if (p[i].priority > mx) {
                         mx = p[i].priority;
                         idx = i;
                     }
                     if (p[i].priority == mx) {
-                        if (p[i].arrivalTime < p[idx].arrivalTime) {
+                        if (p[i].arrival_time < p[idx].arrival_time) {
                             mx = p[i].priority;
                             idx = i;
                         }
@@ -38,8 +40,8 @@ GanntChart Priority(std::vector<Priority_process>& p, bool preemptive) {
             }
 
             if (idx != -1) {
-                if (burst_remaining[idx] == p[idx].burstLength) {
-                    start_time[idx] = current_time;
+                if (burst_remaining[idx] == p[idx].burst_time) {
+                   p[idx].start_time = current_time;
 
                 }
                 burst_remaining[idx] -= 1;
@@ -47,11 +49,11 @@ GanntChart Priority(std::vector<Priority_process>& p, bool preemptive) {
                 prev = current_time;
 
                 if (burst_remaining[idx] == 0) {
-                    completion_time[idx] = current_time;
-                    turnaround_time[idx] = completion_time[idx] - p[idx].arrivalTime;
-                    waiting_time [idx] = turnaround_time[idx] - p[idx].burstLength;
-                    response_time[idx] = start_time[idx] - p[idx].arrivalTime;
-                    total_waiting_time += waiting_time[idx];
+                    p[idx].completion_time = current_time;
+                    p[idx].turnaround_time = p[idx].completion_time - p[idx].arrival_time;
+                    p[idx].waiting_time = p[idx].turnaround_time - p[idx].burst_time;
+                    p[idx].response_time = p[idx].start_time - p[idx].arrival_time;
+                    total_waiting_time += p[idx].waiting_time;
 
                     is_completed[idx] = 1;
                     completed++;
@@ -61,20 +63,37 @@ GanntChart Priority(std::vector<Priority_process>& p, bool preemptive) {
                 current_time++;
             }
         }
+
+        int min_arrival_time = 10000000;
+        int max_completion_time = -1;
+        for (int i = 0; i < n; i++) {
+            min_arrival_time = min(min_arrival_time, p[i].arrival_time);
+            max_completion_time = max(max_completion_time, p[i].completion_time);
+        }
+
+        avg_waiting_time = (float)total_waiting_time / n;
+
+        for (int i = 0; i < n; i++) {
+            gc[i].process = p[i].pid;  gc[i].start = p[i].start_time;  gc[i].end = p[i].completion_time;
+
+        }
+        cout << "Average Waiting Time = " << avg_waiting_time << endl;
+
+        return gc;
     }
 
-    else {
+else{
         while (completed != n) {
             int idx = -1;
             int mx = -1;
             for (int i = 0; i < n; i++) {
-                if (p[i].arrivalTime <= current_time && is_completed[i] == 0) {
+                if (p[i].arrival_time <= current_time && is_completed[i] == 0) {
                     if (p[i].priority > mx) {
                         mx = p[i].priority;
                         idx = i;
                     }
                     if (p[i].priority == mx) {
-                        if (p[i].arrivalTime < p[idx].arrivalTime) {
+                        if (p[i].arrival_time < p[idx].arrival_time) {
                             mx = p[i].priority;
                             idx = i;
                         }
@@ -82,16 +101,17 @@ GanntChart Priority(std::vector<Priority_process>& p, bool preemptive) {
                 }
             }
             if (idx != -1) {
-                start_time[idx] = current_time;
-                completion_time[idx] = start_time[idx] + p[idx].burstLength;
-                turnaround_time[idx] = completion_time[idx] - p[idx].arrivalTime;
-                waiting_time[idx] = turnaround_time[idx] - p[idx].burstLength;
-                response_time[idx] = start_time[idx] - p[idx].arrivalTime;
+                p[idx].start_time = current_time;
+                p[idx].completion_time = p[idx].start_time + p[idx].burst_time;
+                p[idx].turnaround_time = p[idx].completion_time - p[idx].arrival_time;
+                p[idx].waiting_time = p[idx].turnaround_time - p[idx].burst_time;
+                p[idx].response_time = p[idx].start_time - p[idx].arrival_time;
 
-                total_waiting_time += waiting_time[idx];
+                total_waiting_time += p[idx].waiting_time;
+
                 is_completed[idx] = 1;
                 completed++;
-                current_time = completion_time[idx];
+                current_time = p[idx].completion_time;
                 prev = current_time;
             }
             else {
@@ -99,11 +119,21 @@ GanntChart Priority(std::vector<Priority_process>& p, bool preemptive) {
             }
 
         }
-    }
+
+        int min_arrival_time = 10000000;
+        int max_completion_time = -1;
         for (int i = 0; i < n; i++) {
-            gcs.process = p[i].id;  gcs.start = start_time[i];  gcs.end = completion_time[i];
-            gc.push_back(gcs);
+            min_arrival_time = min(min_arrival_time, p[i].arrival_time);
+            max_completion_time = max(max_completion_time, p[i].completion_time);
         }
- 
+
+        avg_waiting_time = (float)total_waiting_time / n;
+
+        for (int i = 0; i < n; i++) {
+            gc[i].process = p[i].pid;  gc[i].start = p[i].start_time;  gc[i].end = p[i].completion_time;
+
+        }
+        cout << "Average Waiting Time = " << avg_waiting_time << endl;
         return gc;
     }
+    };

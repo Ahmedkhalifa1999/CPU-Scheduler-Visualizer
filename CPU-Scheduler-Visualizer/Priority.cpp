@@ -4,28 +4,23 @@ using namespace std;
 
 GanntChart Priority(const std::vector<process>& p, bool preemptive) {
     GanntChart gc;
-    GanntChartSection gcs; 
+    GanntChartSection gcs;
     unsigned int n = p.size();
-    float avg_waiting_time;
-    unsigned int total_waiting_time = 0;
-    vector<int>burst_remaining(n + 1);
-    vector<bool> is_completed(n + 1, 0);
-    vector <int> start_time;
-    vector<int> completion_time;
-    vector<int> waiting_time;
-    vector<int> turnaround_time;
+    vector<unsigned int> burst_remaining(n);
+    vector<bool> is_completed(n, false);
+    vector<unsigned int> start_time(n);
+    vector<unsigned int> completion_time(n);
     unsigned int current_time = 0;
     unsigned int completed = 0;
-    unsigned int prev = 0;
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         burst_remaining[i] = p[i].burstLength;
     }
-    if (preemptive == true) {
+    if (preemptive) {
         while (completed != n) {
             int idx = -1;
-            int mx = -1;
-            for (int i = 0; i < n; i++) {
-                if (p[i].arrivalTime <= current_time && is_completed[i] == 0) {
+            unsigned int mx = 0;
+            for (unsigned int i = 0; i < n; i++) {
+                if (p[i].arrivalTime <= current_time && is_completed[i] == false) {
                     if (p[i].priority > mx) {
                         mx = p[i].priority;
                         idx = i;
@@ -46,15 +41,10 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                 }
                 burst_remaining[idx] -= 1;
                 current_time++;
-                prev = current_time;
 
                 if (burst_remaining[idx] == 0) {
                     completion_time[idx] = current_time;
-                    turnaround_time[idx] = completion_time[idx] - p[idx].arrivalTime;
-                    waiting_time[idx] = turnaround_time[idx] - p[idx].burstLength;
-                    total_waiting_time += waiting_time[idx];
-
-                    is_completed[idx] = 1;
+                    is_completed[idx] = true;
                     completed++;
                 }
             }
@@ -67,9 +57,9 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
     else {
         while (completed != n) {
             int idx = -1;
-            int mx = -1;
-            for (int i = 0; i < n; i++) {
-                if (p[i].arrivalTime <= current_time && is_completed[i] == 0) {
+            unsigned int mx = 0;
+            for (unsigned int i = 0; i < n; i++) {
+                if (p[i].arrivalTime <= current_time && is_completed[i] == false) {
                     if (p[i].priority > mx) {
                         mx = p[i].priority;
                         idx = i;
@@ -85,13 +75,9 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
             if (idx != -1) {
                 start_time[idx] = current_time;
                 completion_time[idx] = start_time[idx] + p[idx].burstLength;
-                turnaround_time[idx] = completion_time[idx] - p[idx].arrivalTime;
-                waiting_time[idx] = turnaround_time[idx] - p[idx].burstLength;
-                total_waiting_time += waiting_time[idx];
-                is_completed[idx] = 1;
+                is_completed[idx] = true;
                 completed++;
                 current_time = completion_time[idx];
-              prev = current_time;
             }
             else {
                 current_time++;
@@ -99,7 +85,7 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
 
         }
     }
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         gcs.process = p[i].id;  gcs.start = start_time[i];  gcs.end = completion_time[i];
         gc.push_back(gcs);
     }

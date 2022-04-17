@@ -6,7 +6,7 @@ GanntChart RoundRobin(const std::vector<process> &processes, unsigned int timeQu
 
 	GanntChart ganntChart;
 	GanntChartSection section;
-	vector<RoundRobin_process> process = processes;
+    vector<process> process = processes;
 
 	unsigned int last = processes.size();
 	unsigned int time = 0;

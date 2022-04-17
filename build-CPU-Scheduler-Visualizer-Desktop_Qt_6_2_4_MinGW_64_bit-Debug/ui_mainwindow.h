@@ -13,7 +13,6 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
@@ -37,7 +36,6 @@ public:
     QSpinBox *ArrivalTimeSpinBox;
     QSpinBox *PrioritySpinBox;
     QTableWidget *ProcessesTable;
-    QGraphicsView *Chart;
     QLabel *AverageWaitingTimeLabel;
     QLabel *MaximumWaitingTimeLabel;
     QLabel *AverageTurnArounTimeLabel;
@@ -106,9 +104,6 @@ public:
         ProcessesTable->setObjectName(QString::fromUtf8("ProcessesTable"));
         ProcessesTable->setGeometry(QRect(20, 160, 761, 151));
         ProcessesTable->setColumnCount(4);
-        Chart = new QGraphicsView(centralwidget);
-        Chart->setObjectName(QString::fromUtf8("Chart"));
-        Chart->setGeometry(QRect(15, 330, 771, 121));
         AverageWaitingTimeLabel = new QLabel(centralwidget);
         AverageWaitingTimeLabel->setObjectName(QString::fromUtf8("AverageWaitingTimeLabel"));
         AverageWaitingTimeLabel->setGeometry(QRect(50, 480, 121, 20));

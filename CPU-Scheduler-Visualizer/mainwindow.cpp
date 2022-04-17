@@ -7,8 +7,6 @@
 #include "Priority.h"
 #include "RoundRobin.h"
 
-static void drawGanntChart(const GanntChart &chart, Ui::MainWindow* ui);
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -25,11 +23,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->PrioritySpinBox->setEnabled(false);
     ui->PrioritySpinBox->hide();
     ui->ProcessesTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    Chart = new ChartArea(this);
+    Chart->setGeometry(40, 330, 700, 120);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete Chart;
 }
 
 
@@ -91,11 +92,11 @@ void MainWindow::on_SchedulerComboBox_currentIndexChanged(int index)
 void MainWindow::on_InesrtButton_clicked()
 {
     ui->ProcessesTable->setRowCount(ui->ProcessesTable->rowCount()+1);
-    ui->ProcessesTable->setItem(currentProcessID, 0, new QTableWidgetItem(QString::number(currentProcessID)));
-    ui->ProcessesTable->setItem(currentProcessID, 1, new QTableWidgetItem(ui->BurstLengthSpinBox->text()));
-    ui->ProcessesTable->setItem(currentProcessID, 2, new QTableWidgetItem(ui->ArrivalTimeSpinBox->text()));
-    if (ui->SchedulerComboBox->currentIndex() == 2) ui->ProcessesTable->setItem(currentProcessID, 3, new QTableWidgetItem(ui->PrioritySpinBox->text()));
-    else ui->ProcessesTable->setItem(currentProcessID, 3, new QTableWidgetItem(1));
+    ui->ProcessesTable->setItem(currentProcessID-1, 0, new QTableWidgetItem(QString::number(currentProcessID)));
+    ui->ProcessesTable->setItem(currentProcessID-1, 1, new QTableWidgetItem(ui->BurstLengthSpinBox->text()));
+    ui->ProcessesTable->setItem(currentProcessID-1, 2, new QTableWidgetItem(ui->ArrivalTimeSpinBox->text()));
+    if (ui->SchedulerComboBox->currentIndex() == 2) ui->ProcessesTable->setItem(currentProcessID-1, 3, new QTableWidgetItem(ui->PrioritySpinBox->text()));
+    else ui->ProcessesTable->setItem(currentProcessID-1, 3, new QTableWidgetItem(1));
     processes.push_back({currentProcessID,
                          static_cast<unsigned int>(ui->ArrivalTimeSpinBox->value()),
                          static_cast<unsigned int>(ui->BurstLengthSpinBox->value()),
@@ -121,7 +122,8 @@ void MainWindow::on_SubmitButton_clicked()
         chart = RoundRobin(processes, ui->QuantumSpinBox->value());
         break;
     }
-    drawGanntChart(chart, ui);
+    Chart->timeline = chart;
+    Chart->repaint();
     metrics calculated = calculateMetrics(chart, processes);
     ui->AverageResponseTimeOutputLabel->setText(QString::number(calculated.averageResponseTime, 'g', 2));
     ui->MaximumResponseTimeOutputLabel->setText(QString::number(calculated.maximumResponseTime, 'g', 2));
@@ -139,16 +141,3 @@ void MainWindow::on_RemoveButton_clicked()
     currentProcessID--;
 }
 
-static void drawGanntChart(const GanntChart &chart, Ui::MainWindow* ui) {
-    unsigned int start = 0 + ui->centralwidget->width()*0.1;
-    unsigned int end = ui->centralwidget->width()*0.9;
-    unsigned int chartLength = end - start;
-    unsigned int totalTime = 0;
-    for (GanntChartSection section: chart) {
-        totalTime += section.end - section.start;
-    }
-    QPainter painter;
-    for (GanntChartSection section: chart) {
-        painter.drawRect(start, 330, ((section.end - section.start)*chartLength) / totalTime, 50);
-    }
-}

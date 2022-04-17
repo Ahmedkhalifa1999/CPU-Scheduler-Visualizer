@@ -6,10 +6,6 @@ typedef struct {
     unsigned int arrivalTime;
     unsigned int burstLength;
     unsigned int priority;
-
-    //Temporary fields for SJF scheduler
-    unsigned int completionTime;
-    unsigned int startTime;
 } process;
 
 #endif // PROCESS_H

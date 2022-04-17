@@ -142,16 +142,6 @@
      </property>
     </column>
    </widget>
-   <widget class="QGraphicsView" name="Chart">
-    <property name="geometry">
-     <rect>
-      <x>15</x>
-      <y>330</y>
-      <width>771</width>
-      <height>121</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="AverageWaitingTimeLabel">
     <property name="geometry">
      <rect>

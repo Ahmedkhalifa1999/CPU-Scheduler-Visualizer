@@ -6,7 +6,7 @@ using namespace std;
 int maximum(vector<int> z)  //function to calculate the maximum element in a vector
 {
 	int max = 0;
-	for (int i = 0; i < z.size(); i++)
+    for (unsigned int i = 0; i < z.size(); i++)
 	{
 		if (z[i] > max)
 		{
@@ -26,7 +26,7 @@ metrics calculateMetrics(GanntChart timeline,  const std::vector<process> &proce
 	double totalr = 0;
 	list<GanntChartSection> x = timeline;
 	x.reverse();
-	for (int i = 0; i < processes.size(); i++)
+    for (unsigned int i = 0; i < processes.size(); i++)
 	{
 		for (GanntChartSection section : x) //iterate on reversed ganntchart to use end value of each process
 		{

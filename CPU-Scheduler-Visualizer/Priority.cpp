@@ -20,7 +20,7 @@ GanntChart Priority(const std::vector<Priority_process>& p, bool preemptive) {
     int prev = 0;
     for (int i = 0; i < n; i++) {
         p[i].id = i + 1;
-        burst_remaining[i] = p[i].burst_time;
+        burst_remaining[i] = p[i].burstLength;
     }
     if (preemptive == true) {
         while (completed != n) {

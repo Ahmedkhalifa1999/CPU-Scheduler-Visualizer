@@ -4,22 +4,20 @@ using namespace std;
 
 GanntChart Priority(const std::vector<process>& p, bool preemptive) {
     GanntChart gc;
-    GanntChartSection gcs;
-    int n = p.size();
+    GanntChartSection gcs; 
+    unsigned int n = p.size();
     float avg_waiting_time;
-    int total_waiting_time = 0;
-    int burst_remaining[100];
-    vector< int> is_completed(100, 0);
-    vector < int> start_time;
+    unsigned int total_waiting_time = 0;
+    vector<int>burst_remaining(n + 1);
+    vector<bool> is_completed(n + 1, 0);
+    vector <int> start_time;
     vector<int> completion_time;
-    vector <int> waiting_time;
+    vector<int> waiting_time;
     vector<int> turnaround_time;
-    vector< int> response_time;
-    int current_time = 0;
-    int completed = 0;
-    int prev = 0;
+    unsigned int current_time = 0;
+    unsigned int completed = 0;
+    unsigned int prev = 0;
     for (int i = 0; i < n; i++) {
-        p[i].id = i + 1;
         burst_remaining[i] = p[i].burstLength;
     }
     if (preemptive == true) {
@@ -54,7 +52,6 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                     completion_time[idx] = current_time;
                     turnaround_time[idx] = completion_time[idx] - p[idx].arrivalTime;
                     waiting_time[idx] = turnaround_time[idx] - p[idx].burstLength;
-                    response_time[idx] = start_time[idx] - p[idx].arrivalTime;
                     total_waiting_time += waiting_time[idx];
 
                     is_completed[idx] = 1;
@@ -90,13 +87,11 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                 completion_time[idx] = start_time[idx] + p[idx].burstLength;
                 turnaround_time[idx] = completion_time[idx] - p[idx].arrivalTime;
                 waiting_time[idx] = turnaround_time[idx] - p[idx].burstLength;
-                response_time[idx] = start_time[idx] - p[idx].arrivalTime;
-
                 total_waiting_time += waiting_time[idx];
                 is_completed[idx] = 1;
                 completed++;
                 current_time = completion_time[idx];
-                prev = current_time;
+              prev = current_time;
             }
             else {
                 current_time++;

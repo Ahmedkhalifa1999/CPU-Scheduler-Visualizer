@@ -7,7 +7,7 @@
 #include "Priority.h"
 #include "RoundRobin.h"
 
-static void drawGanntChart(GanntChart chart, Ui::MainWindow* ui);
+static void drawGanntChart(const GanntChart &chart, Ui::MainWindow* ui);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -139,7 +139,7 @@ void MainWindow::on_RemoveButton_clicked()
     currentProcessID--;
 }
 
-static void drawGanntChart(GanntChart chart, Ui::MainWindow* ui) {
+static void drawGanntChart(const GanntChart &chart, Ui::MainWindow* ui) {
     unsigned int start = 0 + ui->centralwidget->width()*0.1;
     unsigned int end = ui->centralwidget->width()*0.9;
     unsigned int chartLength = end - start;

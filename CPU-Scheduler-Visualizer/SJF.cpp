@@ -1,7 +1,7 @@
 #include "SJF.h"
 using namespace std;
 
-GanntChart SJF(vector<SJF_process>& p, bool preemptive) {
+GanntChart SJF(vector<process>& p, bool preemptive) {
 
     GanntChart gc;
     GanntChartSection gcs;
@@ -18,13 +18,13 @@ GanntChart SJF(vector<SJF_process>& p, bool preemptive) {
             int idx = -1;
             int mn = 10000000;
             for (int i = 0; i < n; i++) {
-                if (p[i].arrivelTime <= current_time && is_completed[i] == 0) {
+                if (p[i].arrivalTime <= current_time && is_completed[i] == 0) {
                     if (p[i].burstLength < mn) {
                         mn = p[i].burstLength;
                         idx = i;
                     }
                     if (p[i].burstLength == mn) {
-                        if (p[i].arrivelTime < p[idx].arrivelTime) {
+                        if (p[i].arrivalTime < p[idx].arrivalTime) {
                             mn = p[i].burstLength;
                             idx = i;
                         }
@@ -52,13 +52,13 @@ GanntChart SJF(vector<SJF_process>& p, bool preemptive) {
             int idx = -1;
             int mn = 10000000;
             for (int i = 0; i < n; i++) {
-                if (p[i].arrivelTime <= current_time && is_completed[i] == 0) {
+                if (p[i].arrivalTime <= current_time && is_completed[i] == 0) {
                     if (burst_remaining[i] < mn) {
                         mn = burst_remaining[i];
                         idx = i;
                     }
                     if (burst_remaining[i] == mn) {
-                        if (p[i].arrivelTime < p[idx].arrivelTime) {
+                        if (p[i].arrivalTime < p[idx].arrivalTime) {
                             mn = burst_remaining[i];
                             idx = i;
                         }

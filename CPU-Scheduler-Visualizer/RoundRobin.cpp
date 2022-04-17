@@ -2,7 +2,7 @@
 
 using namespace std;
 
-GanntChart RoundRobin(const std::vector<RoundRobin_process> &processes, unsigned int timeQuantum) {
+GanntChart RoundRobin(const std::vector<process> &processes, unsigned int timeQuantum) {
 
 	GanntChart ganntChart;
 	GanntChartSection section;

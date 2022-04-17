@@ -24,7 +24,8 @@ HEADERS += \
     RoundRobin.h \
     SJF.h \
     mainwindow.h \
-    metrics.h
+    metrics.h \
+    process.h
 
 FORMS += \
     mainwindow.ui

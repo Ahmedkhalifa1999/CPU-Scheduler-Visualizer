@@ -18,11 +18,11 @@ int maximum(vector<int> z)  //function to calculate the maximum element in a vec
 
 metrics calculateMetrics(GanntChart timeline,  const std::vector<process> &processes) {
 	metrics m;
-	vector<int> turnArround;   //vector to hold the turnarround time for each process
+    vector<int> turnArround(processes.size() + 1);   //vector to hold the turnarround time for each process
 	double totalt = 0;
-	vector<int> waitingTime;   //vector to hold the waiting time for each process
+    vector<int> waitingTime(processes.size() + 1);   //vector to hold the waiting time for each process
 	double totalw = 0;
-	vector<int> responseTime;  //vector to hold the response time for each process
+    vector<int> responseTime(processes.size() + 1);  //vector to hold the response time for each process
 	double totalr = 0;
 	list<GanntChartSection> x = timeline;
 	x.reverse();

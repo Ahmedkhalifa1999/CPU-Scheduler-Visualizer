@@ -1,25 +1,25 @@
 #include "SJF.h"
+#include <limits>
 using namespace std;
 
 GanntChart SJF(const vector<process>& p, bool preemptive) {
 
     GanntChart gc;
     GanntChartSection gcs;
-    int n = p.size();
-    vector<int> startTime(n);
-    vector<int> completionTime(n);
-    vector <int> burst_remaining(n);
-    vector <int> is_completed(100, 0);
+    unsigned int n = p.size();
+    vector<unsigned int> startTime(n);
+    vector<unsigned int> completionTime(n);
+    vector<unsigned int> burst_remaining(n);
+    vector<bool> is_completed(n, false);
 
-    int current_time = 0;
-    int completed = 0;
-    int prev = 0;
+    unsigned int current_time = 0;
+    unsigned int completed = 0;
     if (!preemptive) {
 
         while (completed != n) {
-            int i, idx = -1;
-            int mn = 10000000;
-            for (i = 0; i < n; i++) {
+            int idx = -1;
+            unsigned int mn = numeric_limits<unsigned int>::max();
+            for (unsigned int i = 0; i < n; i++) {
                 if (p[i].arrivalTime <= current_time && is_completed[i] == 0) {
                     if (p[i].burstLength < mn) {
                         mn = p[i].burstLength;
@@ -39,7 +39,6 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
                 is_completed[idx] = 1;
                 completed++;
                 current_time = completionTime[idx];
-                prev = current_time;
             }
             else {
                 current_time++;
@@ -47,13 +46,13 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
         }
     }
     else {
-        for (int i = 0; i < n; i++) {
+        for (unsigned int i = 0; i < n; i++) {
             burst_remaining[i] = p[i].burstLength;
         }
         while (completed != n) {
             int idx = -1;
-            int mn = 10000000;
-            for (int i = 0; i < n; i++) {
+            unsigned int mn = numeric_limits<unsigned int>::max();
+            for (unsigned int i = 0; i < n; i++) {
                 if (p[i].arrivalTime <= current_time && is_completed[i] == 0) {
                     if (burst_remaining[i] < mn) {
                         mn = burst_remaining[i];
@@ -75,7 +74,6 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
                 }
                 burst_remaining[idx] -= 1;
                 current_time++;
-                prev = current_time;
 
                 if (burst_remaining[idx] == 0) {
                     completionTime[idx] = current_time;
@@ -90,8 +88,10 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
         }
     }
 
-    for (int i = 0; i < n; i++) {
-        gcs.process = p[i].id; gcs.start = startTime[i]; gcs.end = completionTime[i];
+    for (unsigned int i = 0; i < n; i++) {
+        gcs.process = p[i].id;
+        gcs.start = startTime[i];
+        gcs.end = completionTime[i];
         gc.push_back(gcs);
     }
 

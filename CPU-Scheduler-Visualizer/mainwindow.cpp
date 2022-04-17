@@ -7,7 +7,7 @@
 #include "Priority.h"
 #include "RoundRobin.h"
 
-static void drawGanntChart(GanntChart chart, QGraphicsView* drawingArea);
+static void drawGanntChart(GanntChart chart, Ui::MainWindow* ui);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -96,45 +96,59 @@ void MainWindow::on_InesrtButton_clicked()
     ui->ProcessesTable->setItem(currentProcessID, 2, new QTableWidgetItem(ui->ArrivalTimeSpinBox->text()));
     if (ui->SchedulerComboBox->currentIndex() == 2) ui->ProcessesTable->setItem(currentProcessID, 3, new QTableWidgetItem(ui->PrioritySpinBox->text()));
     else ui->ProcessesTable->setItem(currentProcessID, 3, new QTableWidgetItem(1));
+    processes.push_back({currentProcessID,
+                         static_cast<unsigned int>(ui->ArrivalTimeSpinBox->value()),
+                         static_cast<unsigned int>(ui->BurstLengthSpinBox->value()),
+                         static_cast<unsigned int>(ui->PrioritySpinBox->value())});
     currentProcessID++;
 }
 
 
 void MainWindow::on_SubmitButton_clicked()
 {
-    std::vector<FCFS_process>FCFS_processes;
-    std::vector<SJF_process>SJF_processes;
-    std::vector<Priority_process>Priority_processes;
-    std::vector<RoundRobin_process>RoundRobin_processes;
     GanntChart chart;
     switch(ui->SchedulerComboBox->currentIndex()) {
     case 0:
-        //Extract Processes from table;
-        chart = FCFS(FCFS_processes);
+        chart = FCFS(processes);
         break;
     case 1:
-        //Extract Processes from table;
-        //chart = SJF(SJF_processes, false);
+        chart = SJF(processes, ui->PreemptiveCheckBox->isChecked());
         break;
     case 2:
-        //Extract Processes from table;
-        chart = Priority(Priority_processes, false);
+        chart = Priority(processes, ui->PreemptiveCheckBox->isChecked());
         break;
     case 3:
-        //Extract Processes from table;
-        chart = RoundRobin(RoundRobin_processes, 10);
+        chart = RoundRobin(processes, ui->QuantumSpinBox->value());
         break;
     }
-    drawGanntChart(chart, ui->Chart);
+    drawGanntChart(chart, ui);
+    metrics calculated = calculateMetrics(chart, processes);
+    ui->AverageResponseTimeOutputLabel->setText(QString::number(calculated.averageResponseTime, 'g', 2));
+    ui->MaximumResponseTimeOutputLabel->setText(QString::number(calculated.maximumResponseTime, 'g', 2));
+    ui->AverageTurnArounTimeOutputLabel->setText(QString::number(calculated.averageTurnAroundTime, 'g', 2));
+    ui->MaximumTurnArounTimeOutputLabel->setText(QString::number(calculated.maximumTurnAroundTime, 'g', 2));
+    ui->AverageWaitingTimeOutputLabel->setText(QString::number(calculated.averageWaitingTime, 'g', 2));
+    ui->MaximumWaitingTimeOutputLabel->setText(QString::number(calculated.maximumWaitingTime, 'g', 2));
 }
 
 
 void MainWindow::on_RemoveButton_clicked()
 {
     ui->ProcessesTable->setRowCount(ui->ProcessesTable->rowCount()-1);
+    processes.pop_back();
     currentProcessID--;
 }
 
-void drawGanntChart(GanntChart chart, QGraphicsView* drawingArea) {
-
+static void drawGanntChart(GanntChart chart, Ui::MainWindow* ui) {
+    unsigned int start = 0 + ui->centralwidget->width()*0.1;
+    unsigned int end = ui->centralwidget->width()*0.9;
+    unsigned int chartLength = end - start;
+    unsigned int totalTime = 0;
+    for (GanntChartSection section: chart) {
+        totalTime += section.end - section.start;
+    }
+    QPainter painter;
+    for (GanntChartSection section: chart) {
+        painter.drawRect(start, 330, ((section.end - section.start)*chartLength) / totalTime, 50);
+    }
 }

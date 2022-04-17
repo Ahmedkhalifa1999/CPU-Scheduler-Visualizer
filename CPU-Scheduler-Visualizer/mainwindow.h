@@ -27,6 +27,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    unsigned int currentProcessID = 0;
+    unsigned int currentProcessID = 1;
+    std::vector<process> processes;
 };
 #endif // MAINWINDOW_H

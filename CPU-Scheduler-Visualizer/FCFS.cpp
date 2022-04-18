@@ -11,14 +11,14 @@ static void swap_process(process *a, process *b);
  @Function takes processes vector as input
  @Function schedules the processes and place them in Gantt Chart and return the Gantt Chart
 */
-GanntChart FCFS(const std::vector<process> &processes)
+GanntChart FCFS(const std::vector<FCFS_process> &processes)
 {
-    unsigned int n = processes.size();   /* Number of processes */
-    unsigned int min_arriv;              /* min arrival time */
-    unsigned int current_time = 0;       /* time on the gantt chart */
-    GanntChart gc;                       /* gc is vector of slots , slot for each process */
-    unsigned char flag = 1;              /*Flag used for indicating filling first slot */
-    std::vector<process> p = processes;
+    unsigned int n = processes.size();  /* Number of processes */
+    unsigned int min_arriv;             /* min arrival time */
+    unsigned int current_time = 0;      /* time on the gantt chart */
+    GanntChart gc;                      /* gc is vector of slots , slot for each process */
+    unsigned char flag = 1;             /*Flag used for indicating filling first slot */
+    vector<FCFS_process> p = processes; /* copy of processes vector to operate on */
 
     /* Sort processes according to arrival times */
     for (unsigned int i = 0; i < n - 1; i++)
@@ -26,7 +26,7 @@ GanntChart FCFS(const std::vector<process> &processes)
         min_arriv = i;
         for (unsigned int j = i + 1; j < n; j++)
         {
-            if (p[j].arrivalTime < p[min_arriv].arrivalTime)
+            if (p[j].arrivelTime < p[min_arriv].arrivelTime)
             {
                 min_arriv = j;
             }
@@ -38,30 +38,35 @@ GanntChart FCFS(const std::vector<process> &processes)
     /* Place processes in Gantt Chart */
     /* Number of slots = number of processes + number of idle slots */
 
-     for (unsigned int i = 1; i < n; i++)
+    for (unsigned int i = 1; i < n; i++)
     {
-    /* Filling First Gantt Chart slot */
-    /* Assumed the first slot starts when first arrived process starts */
-            if (flag)
+        /* Filling First Gantt Chart slot */
+        /* Assumed the first slot starts when first arrived process starts */
+        /* Assumption changed to be : first slot starts at time 0 */
+        if (flag)
+        {
+            if (p[0].arrivelTime != 0)
             {
-                current_time = p[0].arrivalTime + p[0].burstLength;
-                gc.push_back({p[0].id , p[0].arrivalTime , current_time });
-                flag = 0;
+                gc.push_back({0, 0, p[0].arrivelTime});
             }
-            if (p[i].arrivalTime > current_time)
+            current_time = p[0].arrivelTime + p[0].burstLength;
+            gc.push_back({p[0].id, p[0].arrivelTime, current_time});
+            flag = 0;
+        }
+        if (p[i].arrivelTime > current_time)
+        {
+            while (p[i].arrivelTime > current_time)
             {
-                while (p[i].arrivalTime > current_time)
-                {
-                    current_time++;
-                }
-                 gc.push_back({0 ,  gc.back().end  , current_time });
-                i--;
+                current_time++;
             }
-            else if (p[i].arrivalTime <= current_time)
-            {
-                current_time += p[i].burstLength;
-                gc.push_back({p[i].id , gc.back().end , current_time });
-            }
+            gc.push_back({0, gc.back().end, current_time});
+            i--;
+        }
+        else if (p[i].arrivelTime <= current_time)
+        {
+            current_time += p[i].burstLength;
+            gc.push_back({p[i].id, gc.back().end, current_time});
+        }
     }
     return gc;
 }
@@ -72,4 +77,3 @@ static void swap_process(process *a, process *b)
     *a = *b;
     *b = temp;
 }
-

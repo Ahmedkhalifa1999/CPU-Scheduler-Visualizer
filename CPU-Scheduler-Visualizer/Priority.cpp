@@ -23,14 +23,14 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
             for (unsigned int i = 0; i < n; i++) {
                 if (p[i].arrivalTime <= current_time && is_completed[i] == false) {
                     if (p[i].priority > mx) {
-                        gc.push_back({ p[idx].id,start_time[idx],current_time });
+                       
                         mx = p[i].priority;
                         idx = i; 
 
                     }
                     if (p[i].priority == mx) {
                         if (p[i].arrivalTime < p[idx].arrivalTime) {
-                           
+                            gc.push_back({ p[idx].id,start_time[idx],current_time });
                             mx = p[i].priority;
                             idx = i;
                          

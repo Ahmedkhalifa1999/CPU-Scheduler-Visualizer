@@ -18,14 +18,12 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
     if (preemptive) {
         while (completed != n) {
             int idx = -1;
-
+            int prev = -1;
             unsigned int mx = 0;
             for (unsigned int i = 0; i < n; i++) {
                 if (p[i].arrivalTime <= current_time && is_completed[i] == false) {
                     if (p[i].priority > mx) {
-                        if (idx != -1) {
-                            gc.push_back({ p[idx].id,start_time[idx],p[i].arrivalTime });
-                        }
+                        prev = idx; //index of the previous highst process
                         mx = p[i].priority;
                         idx = i; 
 
@@ -37,6 +35,9 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                          
                         }
                     }
+                }
+                if (prev != -1) {
+                    gc.push_back({ p[prev].id,start_time[prev],p[idx].arrivalTime });
                 }
             }
 

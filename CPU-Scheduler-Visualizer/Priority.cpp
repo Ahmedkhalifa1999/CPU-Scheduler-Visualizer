@@ -4,7 +4,7 @@ using namespace std;
 
 GanntChart Priority(const std::vector<process>& p, bool preemptive) {
     GanntChart gc;
-    GanntChartSection gcs;
+   // GanntChartSection gcs;
     unsigned int n = p.size();
     vector<unsigned int> burst_remaining(n);
     vector<bool> is_completed(n, false);
@@ -44,8 +44,9 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
 
                 if (burst_remaining[idx] == 0) {
                     completion_time[idx] = current_time;
+                    gc.push_back({ p[idx].id,start_time[idx],completion_time[idx] });
                     is_completed[idx] = true;
-                    gcs.process = p[idx].id; gcs.start = start_time[idx]; gcs.end = completion_time[idx];
+                   // gcs.process = p[idx].id; gcs.start = start_time[idx]; gcs.end = completion_time[idx];
                     completed++;
                 }
             }
@@ -77,7 +78,8 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                 start_time[idx] = current_time;
                 completion_time[idx] = start_time[idx] + p[idx].burstLength;
                 is_completed[idx] = true;
-                gcs.process = p[idx].id; gcs.start = start_time[idx]; gcs.end = completion_time[idx];
+                gc.push_back({ p[idx].id,start_time[idx],completion_time[idx] });
+             //   gcs.process = p[idx].id; gcs.start = start_time[idx]; gcs.end = completion_time[idx];
                 completed++;
                 current_time = completion_time[idx];
             }
@@ -86,10 +88,6 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
             }
 
         }
-    }
-  
-    for (unsigned int i = 0; i < n; i++) {
-        gc.push_back(gcs);
     }
 
     return gc;

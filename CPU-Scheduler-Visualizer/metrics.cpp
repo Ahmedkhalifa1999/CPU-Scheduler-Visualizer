@@ -36,6 +36,7 @@ metrics calculateMetrics(GanntChart timeline,  const std::vector<process> &proce
 				waitingTime[i] = turnArround[i] - processes[i].burstLength;
 				totalt += turnArround[i];
 				totalw += waitingTime[i];
+				break;
 			}
 		}
 		for (GanntChartSection section : timeline)  //iterate on reversed ganntchart to use first time of each process gets cpu
@@ -44,9 +45,11 @@ metrics calculateMetrics(GanntChart timeline,  const std::vector<process> &proce
 			{
 				responseTime[i] = section.start - processes[i].arrivalTime;
 				totalr += responseTime[i];
+				break;
 			}
 		}
 	}
+	//filling the metrics
 	int c = processes.size();
 	m.averageResponseTime = totalr / c;
 	m.averageTurnAroundTime = totalt / c;

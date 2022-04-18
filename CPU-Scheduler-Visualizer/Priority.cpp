@@ -78,7 +78,7 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                 start_time[idx] = current_time;
                 completion_time[idx] = start_time[idx] + p[idx].burstLength;
                 is_completed[idx] = true;
-                gc.push_back({ p[idx].id,start_time[idx],completion_time[idx] });
+                gc.push_back({p[idx].id, start_time[idx], completion_time[idx]});
              //   gcs.process = p[idx].id; gcs.start = start_time[idx]; gcs.end = completion_time[idx];
                 completed++;
                 current_time = completion_time[idx];

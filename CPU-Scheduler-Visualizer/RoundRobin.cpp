@@ -19,8 +19,22 @@ GanntChart RoundRobin(const std::vector<process> &processes, unsigned int timeQu
 		if (process[i].arrivalTime <= time && process[i].burstLength > 0)
 		{
 			idle = false;
+
+			section.start = time;
 			section.process = processes[i].id;
 			compare = process[i].burstLength;
+
+			if (compare < timeQuantum)
+			{
+				time += compare;
+			}
+			else
+			{
+				time += timeQuantum;
+			}
+
+			section.end = time;
+
 			compare -= timeQuantum;
 			if (compare <= 0)
 			{
@@ -30,10 +44,6 @@ GanntChart RoundRobin(const std::vector<process> &processes, unsigned int timeQu
 			{
 				process[i].burstLength = compare;
 			}
-
-			section.start = time;
-			time += timeQuantum;
-			section.end = time;
 
 			ganntChart.push_back(section);
 

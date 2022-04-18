@@ -75,18 +75,19 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
             if (idx != -1) {
                 if (burst_remaining[idx] == p[idx].burstLength) {
                     startTime[idx] = current_time;
-                    gcs.process = p[idx].id;
-                    gcs.start = startTime[idx];
+                   
 
                 }
                 burst_remaining[idx] -= 1;
                 current_time++;
                 prev = current_time;
-                gcs.end = prev;
-                gc.push_back(gcs);
+                /*gcs.end = prev;
+                gc.push_back(gcs);*/
 
                 if (burst_remaining[idx] == 0) {
                     completionTime[idx] = current_time;
+                    gcs.process = p[idx].id;
+                    gcs.start = startTime[idx];
                     gcs.end = completionTime[idx];
                     gc.push_back(gcs);
                     is_completed[idx] = 1;

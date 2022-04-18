@@ -19,8 +19,8 @@
      <rect>
       <x>40</x>
       <y>40</y>
-      <width>201</width>
-      <height>31</height>
+      <width>200</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -55,9 +55,15 @@
      <rect>
       <x>340</x>
       <y>40</y>
-      <width>48</width>
-      <height>29</height>
+      <width>50</width>
+      <height>30</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
     </property>
    </widget>
    <widget class="QLabel" name="QuantumLabel">
@@ -68,8 +74,8 @@
      <rect>
       <x>270</x>
       <y>40</y>
-      <width>63</width>
-      <height>20</height>
+      <width>60</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
@@ -81,9 +87,15 @@
      <rect>
       <x>130</x>
       <y>110</y>
-      <width>48</width>
-      <height>29</height>
+      <width>50</width>
+      <height>30</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
     </property>
    </widget>
    <widget class="QSpinBox" name="ArrivalTimeSpinBox">
@@ -91,22 +103,34 @@
      <rect>
       <x>280</x>
       <y>110</y>
-      <width>48</width>
-      <height>29</height>
+      <width>50</width>
+      <height>30</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <number>0</number>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
     </property>
    </widget>
    <widget class="QSpinBox" name="PrioritySpinBox">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
       <x>430</x>
       <y>110</y>
-      <width>48</width>
-      <height>29</height>
+      <width>50</width>
+      <height>30</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
     </property>
    </widget>
    <widget class="QTableWidget" name="ProcessesTable">
@@ -114,8 +138,8 @@
      <rect>
       <x>20</x>
       <y>160</y>
-      <width>761</width>
-      <height>151</height>
+      <width>760</width>
+      <height>150</height>
      </rect>
     </property>
     <property name="columnCount">
@@ -147,7 +171,7 @@
      <rect>
       <x>50</x>
       <y>480</y>
-      <width>121</width>
+      <width>140</width>
       <height>20</height>
      </rect>
     </property>
@@ -159,8 +183,8 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>510</y>
-      <width>131</width>
+      <y>520</y>
+      <width>140</width>
       <height>20</height>
      </rect>
     </property>
@@ -173,7 +197,7 @@
      <rect>
       <x>300</x>
       <y>480</y>
-      <width>151</width>
+      <width>160</width>
       <height>20</height>
      </rect>
     </property>
@@ -186,7 +210,7 @@
      <rect>
       <x>300</x>
       <y>520</y>
-      <width>161</width>
+      <width>160</width>
       <height>20</height>
      </rect>
     </property>
@@ -197,7 +221,7 @@
    <widget class="QLabel" name="AverageTurnArounTimeOutputLabel">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>470</x>
       <y>480</y>
       <width>63</width>
       <height>20</height>
@@ -210,7 +234,7 @@
    <widget class="QLabel" name="MaximumTurnArounTimeOutputLabel">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>470</x>
       <y>520</y>
       <width>63</width>
       <height>20</height>
@@ -228,8 +252,8 @@
      <rect>
       <x>270</x>
       <y>40</y>
-      <width>93</width>
-      <height>26</height>
+      <width>100</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
@@ -241,8 +265,8 @@
      <rect>
       <x>500</x>
       <y>110</y>
-      <width>83</width>
-      <height>29</height>
+      <width>80</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
@@ -253,9 +277,9 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>120</y>
+      <y>110</y>
       <width>71</width>
-      <height>16</height>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
@@ -266,9 +290,9 @@
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>120</y>
+      <y>110</y>
       <width>71</width>
-      <height>16</height>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
@@ -277,14 +301,14 @@
    </widget>
    <widget class="QLabel" name="PriorityLabel">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>120</y>
-      <width>49</width>
-      <height>16</height>
+      <y>110</y>
+      <width>50</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
@@ -294,10 +318,10 @@
    <widget class="QLabel" name="AverageWaitingTimeOutputLabel">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>200</x>
       <y>480</y>
-      <width>49</width>
-      <height>16</height>
+      <width>40</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
@@ -307,10 +331,10 @@
    <widget class="QLabel" name="MaximumWaitingTimeOutputLabel">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>510</y>
-      <width>49</width>
-      <height>16</height>
+      <x>200</x>
+      <y>520</y>
+      <width>40</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
@@ -322,7 +346,7 @@
      <rect>
       <x>560</x>
       <y>480</y>
-      <width>131</width>
+      <width>140</width>
       <height>16</height>
      </rect>
     </property>
@@ -335,7 +359,7 @@
      <rect>
       <x>560</x>
       <y>520</y>
-      <width>141</width>
+      <width>140</width>
       <height>16</height>
      </rect>
     </property>
@@ -346,7 +370,7 @@
    <widget class="QLabel" name="AverageResponseTimeOutputLabel">
     <property name="geometry">
      <rect>
-      <x>720</x>
+      <x>710</x>
       <y>480</y>
       <width>49</width>
       <height>16</height>
@@ -359,7 +383,7 @@
    <widget class="QLabel" name="MaximumResponseTimeOutputLabel">
     <property name="geometry">
      <rect>
-      <x>720</x>
+      <x>710</x>
       <y>520</y>
       <width>49</width>
       <height>16</height>
@@ -374,8 +398,8 @@
      <rect>
       <x>700</x>
       <y>110</y>
-      <width>91</width>
-      <height>31</height>
+      <width>80</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
@@ -387,8 +411,8 @@
      <rect>
       <x>600</x>
       <y>110</y>
-      <width>81</width>
-      <height>31</height>
+      <width>80</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">

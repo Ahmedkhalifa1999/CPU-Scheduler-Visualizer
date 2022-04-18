@@ -18,10 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->QuantumSpinBox->hide();
     ui->PreemptiveCheckBox->setEnabled(false);
     ui->PreemptiveCheckBox->hide();
-    ui->PriorityLabel->setEnabled(false);
-    ui->PriorityLabel->hide();
-    ui->PrioritySpinBox->setEnabled(false);
-    ui->PrioritySpinBox->hide();
     ui->ProcessesTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     Chart = new ChartArea(this);
     Chart->setGeometry(40, 330, 700, 120);
@@ -44,10 +40,6 @@ void MainWindow::on_SchedulerComboBox_currentIndexChanged(int index)
         ui->QuantumSpinBox->hide();
         ui->PreemptiveCheckBox->setEnabled(false);
         ui->PreemptiveCheckBox->hide();
-        ui->PriorityLabel->setEnabled(false);
-        ui->PriorityLabel->hide();
-        ui->PrioritySpinBox->setEnabled(false);
-        ui->PrioritySpinBox->hide();
         break;
     case 1: //Shortest Job First
         ui->QuantumLabel->setEnabled(false);
@@ -56,10 +48,6 @@ void MainWindow::on_SchedulerComboBox_currentIndexChanged(int index)
         ui->QuantumSpinBox->hide();
         ui->PreemptiveCheckBox->setEnabled(true);
         ui->PreemptiveCheckBox->show();
-        ui->PriorityLabel->setEnabled(false);
-        ui->PriorityLabel->hide();
-        ui->PrioritySpinBox->setEnabled(false);
-        ui->PrioritySpinBox->hide();
         break;
     case 2: //Priority
         ui->QuantumLabel->setEnabled(false);
@@ -68,10 +56,6 @@ void MainWindow::on_SchedulerComboBox_currentIndexChanged(int index)
         ui->QuantumSpinBox->hide();
         ui->PreemptiveCheckBox->setEnabled(true);
         ui->PreemptiveCheckBox->show();
-        ui->PriorityLabel->setEnabled(true);
-        ui->PriorityLabel->show();
-        ui->PrioritySpinBox->setEnabled(true);
-        ui->PrioritySpinBox->show();
         break;
     case 3: //Round Robin
         ui->QuantumLabel->setEnabled(true);
@@ -80,10 +64,6 @@ void MainWindow::on_SchedulerComboBox_currentIndexChanged(int index)
         ui->QuantumSpinBox->show();
         ui->PreemptiveCheckBox->setEnabled(false);
         ui->PreemptiveCheckBox->hide();
-        ui->PriorityLabel->setEnabled(false);
-        ui->PriorityLabel->hide();
-        ui->PrioritySpinBox->setEnabled(false);
-        ui->PrioritySpinBox->hide();
         break;
     }
 }
@@ -95,8 +75,7 @@ void MainWindow::on_InesrtButton_clicked()
     ui->ProcessesTable->setItem(currentProcessID-1, 0, new QTableWidgetItem(QString::number(currentProcessID)));
     ui->ProcessesTable->setItem(currentProcessID-1, 1, new QTableWidgetItem(ui->BurstLengthSpinBox->text()));
     ui->ProcessesTable->setItem(currentProcessID-1, 2, new QTableWidgetItem(ui->ArrivalTimeSpinBox->text()));
-    if (ui->SchedulerComboBox->currentIndex() == 2) ui->ProcessesTable->setItem(currentProcessID-1, 3, new QTableWidgetItem(ui->PrioritySpinBox->text()));
-    else ui->ProcessesTable->setItem(currentProcessID-1, 3, new QTableWidgetItem(1));
+    ui->ProcessesTable->setItem(currentProcessID-1, 3, new QTableWidgetItem(ui->PrioritySpinBox->text()));
     processes.push_back({currentProcessID,
                          static_cast<unsigned int>(ui->ArrivalTimeSpinBox->value()),
                          static_cast<unsigned int>(ui->BurstLengthSpinBox->value()),

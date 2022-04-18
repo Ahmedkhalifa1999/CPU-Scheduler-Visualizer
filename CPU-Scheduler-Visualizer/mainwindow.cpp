@@ -136,8 +136,10 @@ void MainWindow::on_SubmitButton_clicked()
 
 void MainWindow::on_RemoveButton_clicked()
 {
-    ui->ProcessesTable->setRowCount(ui->ProcessesTable->rowCount()-1);
-    processes.pop_back();
-    currentProcessID--;
+    if (currentProcessID > 1){
+        ui->ProcessesTable->setRowCount(ui->ProcessesTable->rowCount()-1);
+        processes.pop_back();
+        currentProcessID--;
+    }
 }
 

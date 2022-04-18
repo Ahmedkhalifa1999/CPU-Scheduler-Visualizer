@@ -14,6 +14,7 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
 
     unsigned int current_time = 0;
     unsigned int completed = 0;
+    unsigned int prev = 0;
     if (!preemptive) {
 
         while (completed != n) {
@@ -39,6 +40,10 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
                 is_completed[idx] = 1;
                 completed++;
                 current_time = completionTime[idx];
+                gcs.process = p[idx].id;
+                gcs.start = startTime[idx];
+                gcs.end = completionTime[idx];
+                gc.push_back(gcs);
             }
             else {
                 current_time++;
@@ -70,16 +75,22 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
             if (idx != -1) {
                 if (burst_remaining[idx] == p[idx].burstLength) {
                     startTime[idx] = current_time;
+                    gcs.process = p[idx].id;
+                    gcs.start = startTime[idx];
 
                 }
                 burst_remaining[idx] -= 1;
                 current_time++;
+                prev = current_time;
+                gcs.end = prev;
+                gc.push_back(gcs);
 
                 if (burst_remaining[idx] == 0) {
                     completionTime[idx] = current_time;
-
+                    gcs.end = completionTime[idx];
+                    gc.push_back(gcs);
                     is_completed[idx] = 1;
-                    completed++;
+                    completed++; 
                 }
             }
             else {
@@ -88,12 +99,12 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
         }
     }
 
-    for (unsigned int i = 0; i < n; i++) {
+    /*for (unsigned int i = 0; i < n; i++) {
         gcs.process = p[i].id;
         gcs.start = startTime[i];
         gcs.end = completionTime[i];
         gc.push_back(gcs);
-    }
+    }*/
 
 
     return gc;

@@ -38,12 +38,13 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                 }
                
             } 
-                gc.push_back({ p[prev].id,start_time[prev],p[idx].arrivalTime });
 
             if (idx != -1) {
                 if (burst_remaining[idx] == p[idx].burstLength) {
                     start_time[idx] = current_time;
-                    
+                    if (prev != -1) {
+                        gc.push_back({ p[prev].id,start_time[prev],p[idx].arrivalTime });
+                    }
                 }
                 burst_remaining[idx] -= 1;
                 current_time++;

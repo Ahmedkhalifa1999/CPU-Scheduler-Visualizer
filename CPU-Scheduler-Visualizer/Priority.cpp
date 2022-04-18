@@ -25,7 +25,7 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                     if (p[i].priority > mx) {
                         mx = p[i].priority;
                         if (idx != -1) {
-                            gc.push_back({ p[idx].id,start_time[idx],current_time });
+                            gc.push_back({ p[idx].id,p[idx].arrivalTime,current_time });
                         }
                         idx = i; 
 

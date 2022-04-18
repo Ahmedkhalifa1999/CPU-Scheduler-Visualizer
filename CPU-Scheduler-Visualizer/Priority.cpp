@@ -47,7 +47,9 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                 }
                 burst_remaining[idx] -= 1;
                 current_time++;
-                    gc.push_back({ p[idx].id,start_time[idx],current_time});
+                if (p[idx].priority > p[prev].priority) {
+                    gc.push_back({ p[idx].id,start_time[idx],current_time });
+                }
                 if (burst_remaining[idx] == 0) {
                     completion_time[idx] = current_time;
                     gc.push_back({ p[idx].id,start_time[idx],completion_time[idx] }); //process completed it's burst time

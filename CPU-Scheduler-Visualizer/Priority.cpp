@@ -23,7 +23,12 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
             for (unsigned int i = 0; i < n; i++) {
                 if (p[i].arrivalTime <= current_time && is_completed[i] == false) {
                     if (p[i].priority > mx) {
-                        prev = idx; //index of the previous highest process
+                        if (temp != -1) {
+                            prev = temp;
+                        }
+                        else {
+                            prev = idx;
+                        }//index of the previous highest process
                         mx = p[i].priority;
                         idx = i;
 
@@ -31,6 +36,7 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
 
                     if (p[i].priority == mx) {
                         if (p[i].arrivalTime < p[idx].arrivalTime) {
+
                             mx = p[i].priority;
                             idx = i;
 
@@ -65,11 +71,13 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                 if (burst_remaining[idx] == 0) {
                     completion_time[idx] = current_time;
                     if (start_time[idx] == completion_time[idx] - p[idx].burstLength) {
-                        gc.push_back({ p[idx].id,start_time[idx],completion_time[idx] }); //yb2a awel mara yebda2
+                        gc.push_back({ p[idx].id,start_time[idx],completion_time[idx] });
+                        temp = idx;
                     }
                     else {
 
                         gc.push_back({ p[idx].id,completion_time[temp],completion_time[idx] });//lama ykooon bykmel
+                        temp = idx;
                     }
                     is_completed[idx] = true;
                     completed++;
@@ -115,8 +123,8 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
     }
 
     return gc;
-}/*
-int main() {
+}
+/*int main() {
     int n;
     cin >> n;
     vector<process> p(n);

@@ -30,7 +30,7 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                     }
                     if (p[i].priority == mx) {
                         if (p[i].arrivalTime < p[idx].arrivalTime) {
-                            gc.push_back({ p[idx].id,start_time[idx],current_time });
+                           
                             mx = p[i].priority;
                             idx = i;
                          
@@ -46,7 +46,7 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
                 }
                 burst_remaining[idx] -= 1;
                 current_time++;
-               
+                gc.push_back({ p[idx].id,start_time[idx],current_time });
 
                 if (burst_remaining[idx] == 0) {
                     completion_time[idx] = current_time;

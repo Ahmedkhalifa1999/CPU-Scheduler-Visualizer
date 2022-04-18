@@ -87,11 +87,11 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
 
         }
     }
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         stime.insert({ start_time[i],p[i].id, });
     }
 
-    for (int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         gcs.process = stime.begin()->second;  gcs.start = stime.begin()->first; gcs.end = completion_time[stime.begin()->second];
         stime.erase(stime.begin()->first);
         gc.push_back(gcs);

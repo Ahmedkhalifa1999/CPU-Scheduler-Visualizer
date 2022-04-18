@@ -11,14 +11,14 @@ static void swap_process(process *a, process *b);
  @Function takes processes vector as input
  @Function schedules the processes and place them in Gantt Chart and return the Gantt Chart
 */
-GanntChart FCFS(const std::vector<FCFS_process> &processes)
+GanntChart FCFS(const std::vector<process> &processes)
 {
     unsigned int n = processes.size();  /* Number of processes */
     unsigned int min_arriv;             /* min arrival time */
     unsigned int current_time = 0;      /* time on the gantt chart */
     GanntChart gc;                      /* gc is vector of slots , slot for each process */
     unsigned char flag = 1;             /*Flag used for indicating filling first slot */
-    vector<FCFS_process> p = processes; /* copy of processes vector to operate on */
+    std::vector<process> p = processes; /* copy of processes vector to operate on */
 
     /* Sort processes according to arrival times */
     for (unsigned int i = 0; i < n - 1; i++)
@@ -26,7 +26,7 @@ GanntChart FCFS(const std::vector<FCFS_process> &processes)
         min_arriv = i;
         for (unsigned int j = i + 1; j < n; j++)
         {
-            if (p[j].arrivelTime < p[min_arriv].arrivelTime)
+            if (p[j].arrivalTime < p[min_arriv].arrivalTime)
             {
                 min_arriv = j;
             }
@@ -45,24 +45,24 @@ GanntChart FCFS(const std::vector<FCFS_process> &processes)
         /* Assumption changed to be : first slot starts at time 0 */
         if (flag)
         {
-            if (p[0].arrivelTime != 0)
+            if (p[0].arrivalTime != 0)
             {
-                gc.push_back({0, 0, p[0].arrivelTime});
+                gc.push_back({0, 0, p[0].arrivalTime});
             }
-            current_time = p[0].arrivelTime + p[0].burstLength;
-            gc.push_back({p[0].id, p[0].arrivelTime, current_time});
+            current_time = p[0].arrivalTime + p[0].burstLength;
+            gc.push_back({p[0].id, p[0].arrivalTime, current_time});
             flag = 0;
         }
-        if (p[i].arrivelTime > current_time)
+        if (p[i].arrivalTime > current_time)
         {
-            while (p[i].arrivelTime > current_time)
+            while (p[i].arrivalTime > current_time)
             {
                 current_time++;
             }
             gc.push_back({0, gc.back().end, current_time});
             i--;
         }
-        else if (p[i].arrivelTime <= current_time)
+        else if (p[i].arrivalTime <= current_time)
         {
             current_time += p[i].burstLength;
             gc.push_back({p[i].id, gc.back().end, current_time});

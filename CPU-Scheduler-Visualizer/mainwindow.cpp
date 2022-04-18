@@ -125,12 +125,12 @@ void MainWindow::on_SubmitButton_clicked()
     Chart->timeline = chart;
     Chart->repaint();
     metrics calculated = calculateMetrics(chart, processes);
-    ui->AverageResponseTimeOutputLabel->setText(QString::number(calculated.averageResponseTime, 'g', 2));
-    ui->MaximumResponseTimeOutputLabel->setText(QString::number(calculated.maximumResponseTime, 'g', 2));
-    ui->AverageTurnArounTimeOutputLabel->setText(QString::number(calculated.averageTurnAroundTime, 'g', 2));
-    ui->MaximumTurnArounTimeOutputLabel->setText(QString::number(calculated.maximumTurnAroundTime, 'g', 2));
-    ui->AverageWaitingTimeOutputLabel->setText(QString::number(calculated.averageWaitingTime, 'g', 2));
-    ui->MaximumWaitingTimeOutputLabel->setText(QString::number(calculated.maximumWaitingTime, 'g', 2));
+    ui->AverageResponseTimeOutputLabel->setText(QString::number(calculated.averageResponseTime, 'f', 4));
+    ui->MaximumResponseTimeOutputLabel->setText(QString::number(calculated.maximumResponseTime, 'f', 4));
+    ui->AverageTurnArounTimeOutputLabel->setText(QString::number(calculated.averageTurnAroundTime, 'f', 4));
+    ui->MaximumTurnArounTimeOutputLabel->setText(QString::number(calculated.maximumTurnAroundTime, 'f', 4));
+    ui->AverageWaitingTimeOutputLabel->setText(QString::number(calculated.averageWaitingTime, 'f', 4));
+    ui->MaximumWaitingTimeOutputLabel->setText(QString::number(calculated.maximumWaitingTime, 'f', 4));
 }
 
 

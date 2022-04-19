@@ -2,6 +2,7 @@ release/FCFS.o
 release/Priority.o
 release/RoundRobin.o
 release/SJF.o
+release/altPriority.o
 release/chartarea.o
 release/main.o
 release/mainwindow.o

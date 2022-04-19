@@ -46,6 +46,16 @@
       <string>Round Robin</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>Alternative Priority</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Alternative Shortest Job First</string>
+     </property>
+    </item>
    </widget>
    <widget class="QSpinBox" name="QuantumSpinBox">
     <property name="enabled">

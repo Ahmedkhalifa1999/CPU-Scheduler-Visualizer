@@ -1,8 +1,8 @@
-#include "altPriority.h"
+#include "altSJF.h"
 #include <numeric> //for accumulate function
 #include <limits.h>
 
-GanntChart altPriority(const std::vector<process> &processes, bool preemptive) {
+GanntChart altSJF(const std::vector<process>& processes, bool preemptive) {
     unsigned int processCount = processes.size();
     unsigned int currentTime = 0; //holds current simulation time
     std::vector<unsigned int> remainingTime(processCount); //holds remaining time for each process (match on vector index)
@@ -33,23 +33,23 @@ GanntChart altPriority(const std::vector<process> &processes, bool preemptive) {
     section.start = firstArrivalTime;
     section.process = processes[firstArrivalIndex].id;
     unsigned int nextProcessIndex = firstArrivalIndex;
-    unsigned int nextProcessPriority = processes[firstArrivalIndex].priority;
+    unsigned int nextProcessRemainingTime = processes[firstArrivalIndex].priority;
     unsigned int nextProcessArrivalTime = firstArrivalTime;
 
     while (std::accumulate(remainingTime.begin(), remainingTime.end(), 0) != 0) {
          unsigned int currentProcessIndex = nextProcessIndex;
-         unsigned int currentProcessPriority = nextProcessPriority;
+         unsigned int currentProcessRemainingTime = nextProcessRemainingTime;
          //unsigned int currentProcessArrivaltime = nextProcessArrivalTime;
-         nextProcessPriority = 0;
+         nextProcessRemainingTime = UINT_MAX;
          unsigned int finishTime = currentTime + remainingTime[currentProcessIndex];
          for (unsigned int i = 0; i < processCount; i++) {
              if (i != currentProcessIndex //Process is not current process
               && processes[i].arrivalTime <= finishTime //Process will arrive before next process finished
               && remainingTime[i] > 0 //Process still needs CPU time
-              && processes[i].priority > nextProcessPriority) //Processhas the highest priority of all valid
+              && remainingTime[i] < nextProcessRemainingTime) //Processhas the highest priority of all valid
              {
                  nextProcessIndex = i;
-                 nextProcessPriority = processes[i].priority;
+                 nextProcessRemainingTime =remainingTime[i];
                  nextProcessArrivalTime = processes[i].arrivalTime;
              }
          }
@@ -70,7 +70,7 @@ GanntChart altPriority(const std::vector<process> &processes, bool preemptive) {
              section.start = section.end;
              section.process = 0;
              nextProcessIndex = firstArrivalIndex;
-             nextProcessPriority = processes[nextProcessIndex].priority;
+             nextProcessRemainingTime = remainingTime[nextProcessIndex];
              nextProcessArrivalTime = processes[nextProcessIndex].arrivalTime;
              section.end = nextProcessArrivalTime;
              chart.push_back(section);
@@ -79,7 +79,7 @@ GanntChart altPriority(const std::vector<process> &processes, bool preemptive) {
              currentTime = section.start;
          }
          else {
-             if (preemptive && nextProcessPriority > currentProcessPriority) { //if next process has lower priority than current, goes to else (same as nonpreemptive)
+             if (preemptive && nextProcessRemainingTime > currentProcessRemainingTime) { //if next process has more remaining time than current, goes to else (same as nonpreemptive)
                 section.end = nextProcessArrivalTime;
                 chart.push_back(section);
                 remainingTime[currentProcessIndex] -= (section.end - section.start);

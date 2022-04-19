@@ -14,6 +14,7 @@ SOURCES += \
     RoundRobin.cpp \
     SJF.cpp \
     altPriority.cpp \
+    altSJF.cpp \
     chartarea.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     RoundRobin.h \
     SJF.h \
     altPriority.h \
+    altSJF.h \
     chartarea.h \
     mainwindow.h \
     metrics.h \

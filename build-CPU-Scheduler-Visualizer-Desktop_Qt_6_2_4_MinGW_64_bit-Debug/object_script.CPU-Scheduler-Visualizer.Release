@@ -3,6 +3,7 @@ release/Priority.o
 release/RoundRobin.o
 release/SJF.o
 release/altPriority.o
+release/altSJF.o
 release/chartarea.o
 release/main.o
 release/mainwindow.o

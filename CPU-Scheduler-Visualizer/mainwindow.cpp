@@ -6,6 +6,8 @@
 #include "SJF.h"
 #include "Priority.h"
 #include "RoundRobin.h"
+#include "altPriority.h"
+#include "altSJF.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -99,6 +101,12 @@ void MainWindow::on_SubmitButton_clicked()
         break;
     case 3:
         chart = RoundRobin(processes, ui->QuantumSpinBox->value());
+        break;
+    case 4:
+        chart = altPriority(processes, ui->PreemptiveCheckBox->isChecked());
+        break;
+    case 5:
+        chart = altSJF(processes, ui->PreemptiveCheckBox->isChecked());
         break;
     }
     Chart->timeline = chart;

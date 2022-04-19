@@ -2,6 +2,7 @@ debug/FCFS.o
 debug/Priority.o
 debug/RoundRobin.o
 debug/SJF.o
+debug/altPriority.o
 debug/chartarea.o
 debug/main.o
 debug/mainwindow.o

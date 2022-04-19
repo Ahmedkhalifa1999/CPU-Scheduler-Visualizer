@@ -11,33 +11,38 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
     vector<unsigned int> completion_time(n);
     unsigned int current_time = 0;
     unsigned int completed = 0;
-    int temp = -1;
+    int temp = -1;//the index of the previous process
     for (unsigned int i = 0; i < n; i++) {
         burst_remaining[i] = p[i].burstLength;
     }
+
     if (preemptive) {
         while (completed != n) {
             int idx = -1;
             int prev = -1;
-            unsigned int mx = 0;
+            // int temporary = -1;
+
+            unsigned int mn = 10000; /*minimum Priority*/
             for (unsigned int i = 0; i < n; i++) {
+
                 if (p[i].arrivalTime <= current_time && is_completed[i] == false) {
-                    if (p[i].priority > mx) {
-                        if (temp != -1) {
+                    if (p[i].priority < mn) {
+                        //index process
+                        if (temp != -1 && burst_remaining[temp] != 0) {
                             prev = temp;
                         }
                         else {
                             prev = idx;
-                        }//index of the previous highest process
-                        mx = p[i].priority;
+                        }
+                        mn = p[i].priority;
                         idx = i;
 
-                    }
 
-                    if (p[i].priority == mx) {
+                    }
+                    if (p[i].priority == mn) {
                         if (p[i].arrivalTime < p[idx].arrivalTime) {
 
-                            mx = p[i].priority;
+                            mn = p[i].priority;
                             idx = i;
 
                         }
@@ -48,20 +53,22 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
             if (idx != -1) {
                 if (burst_remaining[idx] == p[idx].burstLength) {
                     start_time[idx] = current_time;
-                    if (prev != -1 && burst_remaining[prev] != 0 && p[idx].priority > p[prev].priority) {
-                        if (temp != idx) {
-                            gc.push_back({ p[prev].id,start_time[prev],p[idx].arrivalTime });
+                    if (prev != -1 && burst_remaining[prev] != 0 && p[idx].priority < p[prev].priority) {
+                        if (temp != -1 && burst_remaining[temp] != 0 && p[prev].burstLength - burst_remaining[prev] > 1 && burst_remaining[idx] == 0) {
+                            gc.push_back({ p[prev].id,completion_time[temp],p[idx].arrivalTime });
+
                             temp = idx;
                         }
-                    }//lama ykoon lesa awel mara yeshtghal
-                }
-                else {
-                    if (prev != -1 && burst_remaining[prev] != 0 && p[idx].priority > p[prev].priority) {
-                        if (temp != idx) {
-                            gc.push_back({ p[prev].id,current_time,p[idx].arrivalTime });//eshtghal abl kedaa
-                            temp = idx;
+                        else if (temp != idx && burst_remaining[idx] >= 1) {
+                            if (p[idx].arrivalTime == current_time && p[idx].priority < p[prev].priority) {
+                                gc.push_back({ p[prev].id,start_time[prev],p[idx].arrivalTime });
+                                temp = idx;
+
+                            }
+
                         }
                     }
+                   
                 }
 
                 burst_remaining[idx] -= 1;
@@ -69,22 +76,30 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
 
 
                 if (burst_remaining[idx] == 0) {
+
                     completion_time[idx] = current_time;
                     if (start_time[idx] == completion_time[idx] - p[idx].burstLength) {
                         gc.push_back({ p[idx].id,start_time[idx],completion_time[idx] });
+
                         temp = idx;
+                      
                     }
                     else {
+                        
+                        gc.push_back({ p[idx].id,completion_time[temp],completion_time[idx] });
 
-                        gc.push_back({ p[idx].id,completion_time[temp],completion_time[idx] });//lama ykooon bykmel
                         temp = idx;
+                        
                     }
+
                     is_completed[idx] = true;
                     completed++;
                 }
+
             }
-            else {
+            else {//idle
                 current_time++;
+
             }
         }
     }
@@ -92,16 +107,16 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
     else {
         while (completed != n) {
             int idx = -1;
-            unsigned int mx = 0;
+            unsigned int mn = 10000;
             for (unsigned int i = 0; i < n; i++) {
                 if (p[i].arrivalTime <= current_time && is_completed[i] == false) {
-                    if (p[i].priority > mx) {
-                        mx = p[i].priority;
+                    if (p[i].priority < mn) {
+                        mn = p[i].priority;
                         idx = i;
                     }
-                    if (p[i].priority == mx) {
+                    if (p[i].priority == mn) {
                         if (p[i].arrivalTime < p[idx].arrivalTime) {
-                            mx = p[i].priority;
+                            mn = p[i].priority;
                             idx = i;
                         }
                     }
@@ -124,19 +139,3 @@ GanntChart Priority(const std::vector<process>& p, bool preemptive) {
 
     return gc;
 }
-/*int main() {
-    int n;
-    cin >> n;
-    vector<process> p(n);
-    for (int i = 0; i < n; i++) {
-        cout << "Enter arrival time of process " << i + 1 << ": ";
-        cin >> p[i].arrivalTime;
-        cout << "Enter burst time of process " << i + 1 << ": ";
-        cin >> p[i].burstLength;
-        cout << "Enter priority";
-        cin >> p[i].priority;
-        p[i].id = i + 1;
-        cout << endl;
-    }
-    Priority(p, 1);
-}*/

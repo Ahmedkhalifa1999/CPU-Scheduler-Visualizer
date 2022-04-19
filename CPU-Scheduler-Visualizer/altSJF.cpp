@@ -46,7 +46,7 @@ GanntChart altSJF(const std::vector<process>& processes, bool preemptive) {
              if (i != currentProcessIndex //Process is not current process
               && processes[i].arrivalTime <= finishTime //Process will arrive before next process finished
               && remainingTime[i] > 0 //Process still needs CPU time
-              && remainingTime[i] < nextProcessRemainingTime) //Processhas the highest priority of all valid
+              && remainingTime[i] <= nextProcessRemainingTime) //Process has the highest priority of all valid
              {
                  nextProcessIndex = i;
                  nextProcessRemainingTime =remainingTime[i];

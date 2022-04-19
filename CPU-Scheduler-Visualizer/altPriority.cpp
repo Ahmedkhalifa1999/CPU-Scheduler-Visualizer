@@ -42,15 +42,31 @@ GanntChart altPriority(const std::vector<process> &processes, bool preemptive) {
          //unsigned int currentProcessArrivaltime = nextProcessArrivalTime;
          nextProcessPriority = 0;
          unsigned int finishTime = currentTime + remainingTime[currentProcessIndex];
-         for (unsigned int i = 0; i < processCount; i++) {
-             if (i != currentProcessIndex //Process is not current process
-              && processes[i].arrivalTime <= finishTime //Process will arrive before next process finished
-              && remainingTime[i] > 0 //Process still needs CPU time
-              && processes[i].priority > nextProcessPriority) //Processhas the highest priority of all valid
-             {
-                 nextProcessIndex = i;
-                 nextProcessPriority = processes[i].priority;
-                 nextProcessArrivalTime = processes[i].arrivalTime;
+         if (preemptive) {
+             for (unsigned int i = 0; i < processCount; i++) {
+                 if (i != currentProcessIndex //Process is not current process
+                  && processes[i].arrivalTime <= finishTime //Process will arrive before next process finished
+                  && remainingTime[i] > 0 //Process still needs CPU time
+                  && processes[i].priority > currentProcessPriority //Process has higher priority than current
+                  && processes[i].arrivalTime >= processes[nextProcessIndex].arrivalTime) //Process is the earlieast to arrive
+                 {
+                     nextProcessIndex = i;
+                     nextProcessPriority = processes[i].priority;
+                     nextProcessArrivalTime = processes[i].arrivalTime;
+                 }
+             }
+         }
+         else {
+             for (unsigned int i = 0; i < processCount; i++) {
+                 if (i != currentProcessIndex //Process is not current process
+                  && processes[i].arrivalTime <= finishTime //Process will arrive before next process finished
+                  && remainingTime[i] > 0 //Process still needs CPU time
+                  && processes[i].priority > nextProcessPriority) //Process has the highest priority of all valid
+                 {
+                     nextProcessIndex = i;
+                     nextProcessPriority = processes[i].priority;
+                     nextProcessArrivalTime = processes[i].arrivalTime;
+                 }
              }
          }
          if (currentProcessIndex == nextProcessIndex) { //Idle process needed or last process

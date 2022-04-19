@@ -13,7 +13,7 @@ void ChartArea::paintEvent(QPaintEvent* event){
     unsigned int chartLength = this->width() - 20;
     unsigned int height = this->height()-30;
     unsigned int totalTime = 0;
-    QPainter painter(this);
+    QPainter painter(this);  
     QFontMetrics fontRuler = painter.fontMetrics();
     for (GanntChartSection section: this->timeline) {
         totalTime += section.end - section.start;
@@ -25,6 +25,7 @@ void ChartArea::paintEvent(QPaintEvent* event){
     for (GanntChartSection section: this->timeline) {
         int width = ((section.end - section.start)*chartLength) / totalTime;
         painter.drawRect(start, 10, width, height);
+        painter.fillRect(start+1, 11, width-1, height-1, QBrush(Qt::white));
         QString processText = "P" + QString::number(section.process);
         int processTextWidth = fontRuler.horizontalAdvance(processText);
         painter.drawText(start + (width/2) - (processTextWidth/2), (height-10)/2, processText);

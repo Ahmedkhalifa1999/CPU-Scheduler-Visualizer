@@ -33,69 +33,94 @@ GanntChart altSJF(const std::vector<process>& processes, bool preemptive) {
     section.start = firstArrivalTime;
     section.process = processes[firstArrivalIndex].id;
     unsigned int nextProcessIndex = firstArrivalIndex;
-    unsigned int nextProcessRemainingTime = processes[firstArrivalIndex].priority;
-    unsigned int nextProcessArrivalTime = firstArrivalTime;
 
-    while (std::accumulate(remainingTime.begin(), remainingTime.end(), 0) != 0) {
-         unsigned int currentProcessIndex = nextProcessIndex;
-         unsigned int currentProcessRemainingTime = nextProcessRemainingTime;
-         //unsigned int currentProcessArrivaltime = nextProcessArrivalTime;
-         nextProcessRemainingTime = UINT_MAX;
-         unsigned int finishTime = currentTime + remainingTime[currentProcessIndex];
-         for (unsigned int i = 0; i < processCount; i++) {
-             if (i != currentProcessIndex //Process is not current process
-              && processes[i].arrivalTime <= finishTime //Process will arrive before next process finished
-              && remainingTime[i] > 0 //Process still needs CPU time
-              && remainingTime[i] <= nextProcessRemainingTime) //Process has the highest priority of all valid
-             {
-                 nextProcessIndex = i;
-                 nextProcessRemainingTime =remainingTime[i];
-                 nextProcessArrivalTime = processes[i].arrivalTime;
-             }
-         }
-         if (currentProcessIndex == nextProcessIndex) { //Idle process needed or last process
-             section.end = finishTime;
-             chart.push_back(section);
-             remainingTime[currentProcessIndex] = 0;
-             //Search for first arrival after idle
-             firstArrivalIndex = 0;
-             firstArrivalTime = UINT_MAX;
+    if (preemptive) {
+        while (std::accumulate(remainingTime.begin(), remainingTime.end(), 0) != 0) {
+            unsigned int currentProcessIndex = nextProcessIndex;
+            unsigned int finishTime = currentTime + remainingTime[currentProcessIndex];
+            unsigned int shortestJobTime = UINT_MAX;
+            for (unsigned int i = 0; i < processCount; i++) {
+                if (i != currentProcessIndex && processes[currentProcessIndex].arrivalTime <= finishTime && remainingTime[i] < shortestJobTime && remainingTime[i] > 0) {
+                    nextProcessIndex = i;
+                    shortestJobTime = remainingTime[i];
+                }
+            }
+            section.end = finishTime;
+            remainingTime[currentProcessIndex] = 0;
+            chart.push_back(section);
+            if (currentProcessIndex == nextProcessIndex) {
+                firstArrivalTime = UINT_MAX;
+                //Get earliest process to arrive (ties resolved on burst length)
+                for (unsigned int i = 0; i < processCount; i++) {
+                    if (processes[i].arrivalTime <= firstArrivalTime && remainingTime[i] > 0) {
+                        if (processes[i].arrivalTime == firstArrivalTime) {
+                            if (remainingTime[i] < remainingTime[firstArrivalIndex]) {
+                                firstArrivalIndex = i;
+                                firstArrivalTime = processes[i].arrivalTime;
+                            }
+                        }
+                        else {
+                            firstArrivalIndex = i;
+                            firstArrivalTime = processes[i].arrivalTime;
+                        }
+                    }
+                }
+                if (firstArrivalTime != UINT_MAX) {
+                    section.start = 0;
+                    section.end = firstArrivalTime;
+                    section.process = 0;
+                    chart.push_back(section);
+                }
+                currentTime = firstArrivalTime;
+                section.start = firstArrivalTime;
+                section.process = processes[firstArrivalIndex].id;
+                nextProcessIndex = firstArrivalIndex;
+            }
+       }
+        }
+    else {
+        while (std::accumulate(remainingTime.begin(), remainingTime.end(), 0) != 0) {
+             unsigned int currentProcessIndex = nextProcessIndex;
+             unsigned int finishTime = currentTime + remainingTime[currentProcessIndex];
+             unsigned int shortestJobTime = UINT_MAX;
              for (unsigned int i = 0; i < processCount; i++) {
-                 if (processes[i].arrivalTime < firstArrivalTime && i != currentProcessIndex && remainingTime[i] > 0) {
-                     firstArrivalIndex = i;
-                     firstArrivalTime = processes[i].arrivalTime;
+                 if (i != currentProcessIndex && processes[currentProcessIndex].arrivalTime <= finishTime && remainingTime[i] < shortestJobTime && remainingTime[i] > 0) {
+                     nextProcessIndex = i;
+                     shortestJobTime = remainingTime[i];
                  }
              }
-             if (firstArrivalTime == UINT_MAX) continue; //last process
-             section.start = section.end;
-             section.process = 0;
-             nextProcessIndex = firstArrivalIndex;
-             nextProcessRemainingTime = remainingTime[nextProcessIndex];
-             nextProcessArrivalTime = processes[nextProcessIndex].arrivalTime;
-             section.end = nextProcessArrivalTime;
+             section.end = finishTime;
+             remainingTime[currentProcessIndex] = 0;
              chart.push_back(section);
-             section.start = section.end;
-             section.process = processes[nextProcessIndex].id;
-             currentTime = section.start;
-         }
-         else {
-             if (preemptive && nextProcessRemainingTime > currentProcessRemainingTime) { //if next process has more remaining time than current, goes to else (same as nonpreemptive)
-                section.end = nextProcessArrivalTime;
-                chart.push_back(section);
-                remainingTime[currentProcessIndex] -= (section.end - section.start);
-                section.start = section.end;
-                section.process = processes[nextProcessIndex].id;
-                currentTime = section.start;
+             if (currentProcessIndex == nextProcessIndex) {
+                 firstArrivalTime = UINT_MAX;
+                 //Get earliest process to arrive (ties resolved on burst length)
+                 for (unsigned int i = 0; i < processCount; i++) {
+                     if (processes[i].arrivalTime <= firstArrivalTime && remainingTime[i] > 0) {
+                         if (processes[i].arrivalTime == firstArrivalTime) {
+                             if (remainingTime[i] < remainingTime[firstArrivalIndex]) {
+                                 firstArrivalIndex = i;
+                                 firstArrivalTime = processes[i].arrivalTime;
+                             }
+                         }
+                         else {
+                             firstArrivalIndex = i;
+                             firstArrivalTime = processes[i].arrivalTime;
+                         }
+                     }
+                 }
+                 if (firstArrivalTime != UINT_MAX) {
+                     section.start = 0;
+                     section.end = firstArrivalTime;
+                     section.process = 0;
+                     chart.push_back(section);
+                 }
+                 currentTime = firstArrivalTime;
+                 section.start = firstArrivalTime;
+                 section.process = processes[firstArrivalIndex].id;
+                 nextProcessIndex = firstArrivalIndex;
              }
-             else {
-                 section.end = finishTime;
-                 chart.push_back(section);
-                 remainingTime[currentProcessIndex] = 0;
-                 section.start = section.end;
-                 section.process = processes[nextProcessIndex].id;
-                 currentTime = section.start;
-             }
-         }
+        }
     }
 
     return chart;

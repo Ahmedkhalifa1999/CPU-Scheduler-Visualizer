@@ -92,12 +92,20 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
                         }
 
 
-                        else if (temp != idx && p[prev].burstLength - burst_remaining[prev] >= 1 && burst_remaining[idx] > 1) {
+                        else if (temp != idx && p[prev].burstLength - burst_remaining[prev] > 1 && burst_remaining[idx] > 1) {
                             gcs.process = p[prev].id;
                             gcs.start = startTime[prev];    //old p1 not p4
                             gcs.end = p[idx].arrivalTime;   //heta makmltsh w gat haga at3tha bas mkhlstsh
                             gc.push_back(gcs);
                             temp = idx;
+                        }
+                        if (temp == -1) {
+                            gcs.process = p[prev].id;
+                            gcs.start = startTime[prev];    //old p1 not p4
+                            gcs.end = p[idx].arrivalTime;   //heta makmltsh w gat haga at3tha bas mkhlstsh
+                            gc.push_back(gcs);
+                            temp = idx;
+
                         }
 
 

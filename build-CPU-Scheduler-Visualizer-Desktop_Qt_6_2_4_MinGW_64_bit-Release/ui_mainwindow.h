@@ -70,8 +70,6 @@ public:
         SchedulerComboBox->addItem(QString());
         SchedulerComboBox->addItem(QString());
         SchedulerComboBox->addItem(QString());
-        SchedulerComboBox->addItem(QString());
-        SchedulerComboBox->addItem(QString());
         SchedulerComboBox->setObjectName(QString::fromUtf8("SchedulerComboBox"));
         SchedulerComboBox->setGeometry(QRect(40, 40, 200, 30));
         QuantumSpinBox = new QSpinBox(centralwidget);
@@ -197,8 +195,6 @@ public:
         SchedulerComboBox->setItemText(1, QCoreApplication::translate("MainWindow", "Shortest Job First", nullptr));
         SchedulerComboBox->setItemText(2, QCoreApplication::translate("MainWindow", "Priority", nullptr));
         SchedulerComboBox->setItemText(3, QCoreApplication::translate("MainWindow", "Round Robin", nullptr));
-        SchedulerComboBox->setItemText(4, QCoreApplication::translate("MainWindow", "Alternative Priority", nullptr));
-        SchedulerComboBox->setItemText(5, QCoreApplication::translate("MainWindow", "Alternative Shortest Job First", nullptr));
 
         QuantumLabel->setText(QCoreApplication::translate("MainWindow", "Quantum", nullptr));
         QTableWidgetItem *___qtablewidgetitem = ProcessesTable->horizontalHeaderItem(0);

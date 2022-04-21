@@ -11,6 +11,7 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
     vector<unsigned int> completionTime(n);
     vector<unsigned int> burst_remaining(n);
     vector<bool> is_completed(n, false);
+    vector<bool> visited(n, false);
     int temp = -1;
     unsigned int current_time = 0;
     unsigned int completed = 0;
@@ -82,31 +83,25 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
             if (idx != -1) {
                 if (burst_remaining[idx] == p[idx].burstLength) {
                     startTime[idx] = current_time;
-                    if (prev != -1 && burst_remaining[prev] != 0 && burst_remaining[prev] > burst_remaining[idx]) {
-                        if (temp != -1 && burst_remaining[temp] == 0 && p[idx].burstLength > burst_remaining[prev] && p[idx].arrivalTime > current_time && p[prev].burstLength - burst_remaining[prev] > 1) {
+                    if (prev != -1 && startTime[prev] == p[idx].arrivalTime - (p[prev].burstLength - burst_remaining[prev]) && burst_remaining[prev] != 0) {
+                        if (visited[prev] != true) {
                             gcs.process = p[prev].id;
-                            gcs.start = completionTime[temp];
+                            gcs.start = p[idx].arrivalTime - (p[prev].burstLength - burst_remaining[prev]);
                             gcs.end = p[idx].arrivalTime;        //p1 not p4  //heta felnos w lesa leha ba2y mn gher mategy haga t2t3ha
                             gc.push_back(gcs);
                             temp = idx;
+                            visited[prev] = true;
                         }
 
 
-                        else if (temp != idx && p[prev].burstLength - burst_remaining[prev] > 1 && burst_remaining[idx] > 1) {
+                        else if (prev != -1 && visited[prev] == true && completionTime[temp] != current_time) {
                             gcs.process = p[prev].id;
-                            gcs.start = startTime[prev];    //old p1 not p4
+                            gcs.start = completionTime[temp];    //old p1 not p4
                             gcs.end = p[idx].arrivalTime;   //heta makmltsh w gat haga at3tha bas mkhlstsh
                             gc.push_back(gcs);
                             temp = idx;
                         }
-                        if (temp == -1) {
-                            gcs.process = p[prev].id;
-                            gcs.start = startTime[prev];    //old p1 not p4
-                            gcs.end = p[idx].arrivalTime;   //heta makmltsh w gat haga at3tha bas mkhlstsh
-                            gc.push_back(gcs);
-                            temp = idx;
 
-                        }
 
 
                     }
@@ -127,6 +122,7 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
                         gcs.end = completionTime[idx];   //p4  //heta bad2t w khaslt 
                         gc.push_back(gcs);
                         temp = idx;
+                        visited[idx] = true;
                     }
                     else {
                         gcs.process = p[idx].id;
@@ -134,6 +130,7 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
                         gcs.end = completionTime[idx];
                         gc.push_back(gcs);
                         temp = idx;
+                        visited[idx] = true;
 
                     }
                     is_completed[idx] = 1;

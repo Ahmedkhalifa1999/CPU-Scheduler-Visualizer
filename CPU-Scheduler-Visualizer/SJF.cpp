@@ -92,20 +92,21 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
                             temp = idx;
                             visited[prev] = true;
                         }
-
-
-                        else if (prev != -1 && visited[prev] == true && completionTime[temp] != current_time) {
-                            gcs.process = p[prev].id;
-                            gcs.start = completionTime[temp];    //old p1 not p4
-                            gcs.end = p[idx].arrivalTime;   //heta makmltsh w gat haga at3tha bas mkhlstsh
-                            gc.push_back(gcs);
-                            temp = idx;
-                        }
-
-
-
                     }
+
+
+                    else if (prev != -1 && visited[prev] == true && completionTime[temp] != current_time) {
+                        gcs.process = p[prev].id;
+                        gcs.start = completionTime[temp];    //old p1 not p4
+                        gcs.end = p[idx].arrivalTime;   //heta makmltsh w gat haga at3tha bas mkhlstsh
+                        gc.push_back(gcs);
+                        temp = idx;
+                    }
+
+
+
                 }
+
 
 
 
@@ -137,6 +138,7 @@ GanntChart SJF(const vector<process>& p, bool preemptive) {
                     completed++;
                 }
             }
+
             else {
                 current_time++;
             }

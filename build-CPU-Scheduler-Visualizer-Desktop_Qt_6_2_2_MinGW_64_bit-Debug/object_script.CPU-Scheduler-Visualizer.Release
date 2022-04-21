@@ -1,0 +1,12 @@
+release/FCFS.o
+release/Priority.o
+release/RoundRobin.o
+release/SJF.o
+release/altPriority.o
+release/altSJF.o
+release/chartarea.o
+release/main.o
+release/mainwindow.o
+release/metrics.o
+release/moc_chartarea.o
+release/moc_mainwindow.o

@@ -1,0 +1,12 @@
+debug/FCFS.o
+debug/Priority.o
+debug/RoundRobin.o
+debug/SJF.o
+debug/altPriority.o
+debug/altSJF.o
+debug/chartarea.o
+debug/main.o
+debug/mainwindow.o
+debug/metrics.o
+debug/moc_chartarea.o
+debug/moc_mainwindow.o
